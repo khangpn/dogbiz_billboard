@@ -77,10 +77,6 @@ module.exports = function(sequelize, DataTypes) {
   Account.associate = function(models) {
     Account.hasOne(models.token, {
       onDelete: "CASCADE",
-      hooks: true, // for onDelete
-      foreignKey: {
-        allowNull: false
-      }
     });
     Account.hasOne(models.admin, {
       onDelete: "CASCADE"

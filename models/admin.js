@@ -29,8 +29,6 @@ module.exports = function(sequelize, DataTypes) {
   // Class methods, new from Seq v4
   Admin.associate = function(models) {
     Admin.belongsTo(models.account, {
-      onDelete: "CASCADE",
-      hooks: true, //for onDelete
       foreignKey: {
         allowNull: false
       }

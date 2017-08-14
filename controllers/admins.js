@@ -37,7 +37,6 @@ router.post('/',
 
     var data = req.body;
     var Sequelize = req.models.Sequelize;
-    var errors = [];
     if (data['account'] == undefined) {
       var errorItem = new Sequelize.ValidationErrorItem(
         "The account data is invalid",
@@ -45,23 +44,25 @@ router.post('/',
         "account",
         data['account']
       );
-      errors.push(errorItem);
-    }
-    if (data['account']['email'] == undefined) {
-      var errorItem = new Sequelize.ValidationErrorItem(
-        "The email is invalid",
-        "invalid format",
-        "email",
-        data['email']
-      );
-      errors.push(errorItem);
-    }
-    if (errors.length != 0) {
-      var error = new Sequelize.ValidationError("The input is invalid", errors);
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
       res.render("create", {error: error});
+    } else {
+      var Account = req.models.account;
+      var Admin = req.models.admin;
+      const account = Account.build(data['account']);
+      account.validate().then(function() {
+        const admin = Admin.build(data, {
+          include: [Account]
+        });
+        return admin.validate().then(function() {
+          next();
+        }).catch(function(error) {
+          res.render("create", {error: error});
+        });
+      }).catch(function(error) {
+        res.render("create", {error: error});
+      });
     }
-
-    next();
   }, function(req, res, next) {
     var data = req.body;
 
@@ -78,7 +79,7 @@ router.post('/',
     }) .then(function(admin){
       res.redirect("/admins/" + admin.id); 
     }).catch ( function(error){
-      next(error);
+      res.render("create", {error: error});
     });
   }
 );
@@ -106,11 +107,14 @@ router.delete('/:id',
     next();
   }, function(req, res, next) {
     var Admin = req.models.admin;
-    Admin.destroy({
-      where: { id: req.params.id }
-      })
-      .then(function(deleteds){
-        res.redirect("/admins");
+    Admin.findById(req.params.id, {
+      include: [req.models.account]
+      }).then(function(admin){
+        var account = admin.account;
+        // If we call admin.destroy, the corresponding account will not be deleted on cascade.
+        return account.destroy().then(function() {
+          res.redirect("/admins");
+        });
       }).catch( function(error){
         next(error);
       });
@@ -171,11 +175,41 @@ router.put('/:id',
       return admin.update(data).then(function(admin){
         res.render("view", {admin: admin}); 
       }, function (error) {
-        next(error);
+        res.render("view", {admin: admin, error: error}); 
       });
     }).catch( function(error){
       next(error);
     });
+  }
+);
+
+router.get('/:id/password',
+  function(req, res, next) {
+    if (!res.locals.authenticated) {
+      var err = new Error('You are not permitted to access this!');
+      error.status = 401;
+      next(error);
+    }
+
+    var Admin = req.models.admin;
+    return Admin.findById(data.id).then(function(admin) {
+      if (!admin) {
+        var err = new Error("Can't find the admin with id: " + data.id);
+        error.status = 404;
+        next(error);
+      }
+      if (admin.account_id != res.locals.current_account.id) {
+        var err = new Error('You are not permitted to access this!');
+        error.status = 401;
+        next(error);
+      }
+      res.locals.current_admin = admin;
+      return next();
+    }).catch( function(error){
+      next(error);
+    });
+  }, function(req, res, next) {
+    render("password", {admin: res.locals.current_admin});
   }
 );
 
@@ -201,7 +235,7 @@ router.post('/:id/password',
     var Admin = req.models.admin;
     return Admin.findById(data.id).then(function(admin) {
       if (!admin) {
-        var err = new Error("Can't find the item with id: " + data.id);
+        var err = new Error("Can't find the admin with id: " + data.id);
         error.status = 404;
         next(error);
       }
@@ -230,12 +264,17 @@ router.post('/:id/password',
           .then(function(updatedAcc){
             res.redirect('/admins/' + res.locals.current_admin.id); 
           }).catch( function(error){
-            next(error);
+            render("password", {admin: res.locals.current_admin, error: error});
           });
       } else {
-        var err = new Error('Your old password is incorrect!');
-        error.status = 401;
-        next(error);
+        var errorItem = new Sequelize.ValidationErrorItem(
+          "Your old password is incorrect!",
+          "invalid password",
+          "password",
+          data['password']
+        );
+        var error = new Sequelize.ValidationError("The input is invalid", [errors]);
+        render("password", {admin: res.locals.current_admin, error: error});
       }
     });
   }
