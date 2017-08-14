@@ -1,2 +1,10 @@
-# dogbiz_billboard
-A billboard for vietnamese dogs from show
+# DogBiz BillBoard
+
+The Web-platform billboard for dogs from dog shows.
+
+## Technolgies:
+- NodeJs, ExpressJs
+- Postgresql
+
+## Platform:
+- Ubuntu 16.04

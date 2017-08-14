@@ -1,0 +1,22 @@
+var settings = {
+  development: {
+    database : "dogbiz",
+    username : "dogbiz",
+    password : "dogbiz",
+    options  : {
+      dialect : "postgresql",
+      host     : "127.0.0.1"
+    }
+  },
+  production: {
+    database : "dogbiz",
+    username : "dogbiz",
+    password : "KB@DbBb$0817",
+    options  : {
+      dialect : "postgresql",
+      host     : "127.0.0.1"
+    }
+  }
+};
+
+module.exports = settings;

@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# KnP: real config files
+config/*.js
