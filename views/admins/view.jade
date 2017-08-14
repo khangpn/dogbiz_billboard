@@ -22,3 +22,7 @@ block content
           form.form-horizontal(action='/admins/'+admin.id, method="post")
             input(type="hidden", name="_method", value="delete")
             input.btn.btn-danger(type='submit', value='Delete Admin') 
+        if (admin.account_id == current_account.id) 
+          div.col-sm-offset-2.col-sm-3
+            a.btn.btn-default(href='/admins/'+admin.id+'/password') 
+              | Update password

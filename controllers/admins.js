@@ -192,7 +192,7 @@ router.get('/:id/password',
     }
 
     var Admin = req.models.admin;
-    return Admin.findById(data.id).then(function(admin) {
+    return Admin.findById(req.params.id).then(function(admin) {
       if (!admin) {
         var err = new Error("Can't find the admin with id: " + data.id);
         error.status = 404;
@@ -209,11 +209,11 @@ router.get('/:id/password',
       next(error);
     });
   }, function(req, res, next) {
-    render("password", {admin: res.locals.current_admin});
+    res.render("password", {admin: res.locals.current_admin});
   }
 );
 
-router.post('/:id/password',
+router.put('/:id/password',
   function(req, res, next) {
     if (!res.locals.authenticated) {
       var err = new Error('You are not permitted to access this!');
@@ -225,14 +225,10 @@ router.post('/:id/password',
       error.status = 400;
       next(error);
     }
-    var data = req.body;
-    if (!data.account.old_password) {
-      var err = new Error('Old password must not be empty');
-      error.status = 400;
-      next(error);
-    }
 
+    var data = req.body;
     var Admin = req.models.admin;
+    var Sequelize = req.models.Sequelize;
     return Admin.findById(data.id).then(function(admin) {
       if (!admin) {
         var err = new Error("Can't find the admin with id: " + data.id);
@@ -244,8 +240,19 @@ router.post('/:id/password',
         error.status = 401;
         next(error);
       }
+      if (!data.account.old_password) {
+        var errorItem = new Sequelize.ValidationErrorItem(
+          "Old password must not be empty",
+          "not empty",
+          "account.old_password",
+          data['account']['old_password']
+        );
+        var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+        // have to return otherwise expressjs raise "Can't set headers after they are sent."
+        return res.render("password", {admin: admin, error: error});
+      }
       res.locals.current_admin = admin;
-      return next();
+      next();
     }).catch( function(error){
       next(error);
     });
@@ -253,9 +260,23 @@ router.post('/:id/password',
     var data = req.body;
     var accountData = data.account;
     var account = res.locals.current_account;
+    var Sequelize = req.models.Sequelize;
 
+    if (accountData.password != accountData.password_confirm) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "Confirmed password does not match",
+        "invalid password_confirm",
+        "password_confirm",
+        accountData['password_confirm']
+      );
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+      res.render("password", {
+        admin: res.locals.current_admin, 
+        error: error
+      });
+    }
     account.checkPasswordMatch(accountData.old_password, function(error, matched){
-      if (error) return next(error);
+      if (error) next(error);
 
       if (matched) {
         account.set('password', accountData.password);
@@ -264,17 +285,23 @@ router.post('/:id/password',
           .then(function(updatedAcc){
             res.redirect('/admins/' + res.locals.current_admin.id); 
           }).catch( function(error){
-            render("password", {admin: res.locals.current_admin, error: error});
+            res.render("password", {
+              admin: res.locals.current_admin,
+              error: error
+            });
           });
       } else {
         var errorItem = new Sequelize.ValidationErrorItem(
           "Your old password is incorrect!",
           "invalid password",
           "password",
-          data['password']
+          accountData['password']
         );
-        var error = new Sequelize.ValidationError("The input is invalid", [errors]);
-        render("password", {admin: res.locals.current_admin, error: error});
+        var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+        res.render("password", {
+          admin: res.locals.current_admin,
+          error: error
+        });
       }
     });
   }
