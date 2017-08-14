@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Accounts List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th ID
+              th Email
+              th Fullname
+              th Is admin?
+          tbody
+            for account in accounts
+              - var detail = account.admin;
+              tr
+                td=account.id
+                td
+                  a(href='/accounts/' + account.id)=account.email
+                if (!customer && !detail) 
+                  td=''
+                if (detail) 
+                  td=detail.fullname
+                td=account.is_admin ? 'true' : 'false'

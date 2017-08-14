@@ -1,0 +1,51 @@
+{
+  "name": "dogbiz_billboard",
+  "version": "0.0.0",
+  "description": "The Web-platform billboard for dogs from dog shows.",
+  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "sync_db": "node ./bin/db-integration.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khangpn/dogbiz_billboard.git"
+  },
+  "keywords": [
+    "billboard",
+    "nodejs",
+    "expressjs",
+    "cms"
+  ],
+  "author": {
+    "name": "Phuc-Khang Nguyen",
+    "email": "nguyenphuckhang@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khangpn/dogbiz_billboard/issues"
+  },
+  "homepage": "https://github.com/khangpn/dogbiz_billboard#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "~1.17.1",
+    "bootstrap": "^3.3.7",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "jquery": "^3.2.1",
+    "jquery-ui-dist": "^1.12.1",
+    "method-override": "^2.3.9",
+    "morgan": "~1.8.1",
+    "pg": "^7.1.2",
+    "pg-hstore": "^2.3.2",
+    "promise": "^8.0.1",
+    "pug": "^2.0.0-rc.3",
+    "sequelize": "^4.4.9",
+    "serve-favicon": "~2.4.2",
+    "uuid": "^3.1.0"
+  }
+}

@@ -1,0 +1,138 @@
+doctype html
+html
+  head
+    title= 'DogBiz Billboard'
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/jquery-ui-dist/jquery-ui.min.css')
+    link(rel='stylesheet', href='/jquery-ui-dist/jquery-ui.theme.min.css')
+    link(rel='stylesheet', href='/jquery-ui-dist/jquery-ui.structure.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+    script(src='/jquery/dist/jquery.min.js')
+    script(src='/jquery-ui-dist/jquery-ui.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+
+  body
+    //nav.navbar.navbar-default.navbar-fixed-top.bs-docs-nav
+    header#top.navbar.navbar-static-top.navbar-default.bs-docs-nav(role="banner")
+      div.container
+        div.navbar-header
+          button.navbar-toggle.collapsed(
+            type="button",
+            data-toggle="collapse",
+            data-target="#bs-example-navbar-collapse-1",
+            aria-expanded="false")
+            span.sr-only
+              Toggle navigation
+          a.navbar-brand(href="/")
+            | Cabinet Dentaire
+        div.collapse.navbar-collapse#bs-example-navbar-collapse-1
+          if authenticated
+            ul.nav.navbar-nav
+              li.dropdown
+                a.dropdown-toggle(href="",
+                  data-toggle="dropdown",
+                  role="button",
+                  aria-haspopup="true",
+                  aria-expanded="false")
+                  | Item
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href="/items")
+                      | Items list
+                  if isAdmin
+                    li
+                      a(href="/items/create")
+                        | Create item
+              if isAdmin
+                li.dropdown
+                  a.dropdown-toggle(href="",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Accounts
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/accounts")
+                        | Accounts List
+                li.dropdown
+                  a.dropdown-toggle(href="",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Customers
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/customers")
+                        | Customers List
+                    li
+                      a(href="/customers/create")
+                        | Create Customer
+                li.dropdown
+                  a.dropdown-toggle(href="",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Sellers
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/sellers")
+                        | Sellers List
+                    li
+                      a(href="/sellers/create")
+                        | Create Seller
+                li.dropdown
+                  a.dropdown-toggle(href="",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Admin
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/admins")
+                        | Admin List
+                    li
+                      a(href="/admins/create")
+                        | Create Admin
+          ul.nav.navbar-nav.navbar-right
+            if authenticated
+              li.dropdown
+                a.dropdown-toggle(href="",
+                  data-toggle="dropdown",
+                  role="button",
+                  aria-haspopup="true",
+                  aria-expanded="false")
+                  ="Hello " + current_account.email
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href="/accounts/" + current_account.id)
+                      | Profile
+                  li
+                    a(href="/logout")
+                      | Log out
+            else
+              li
+                a(href="/login")
+                  | Log in
+    div.container
+      if notification
+        div.row
+          div.alert(class=notification.type,
+            role="alert")
+            =notification.content
+      if breadcrums
+        div.row
+          ol.breadcrumb
+            each bc, index in breadcrums
+              li: a(href=bc.link)=bc.name
+      block content

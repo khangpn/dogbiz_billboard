@@ -30,6 +30,7 @@ module.exports = function(sequelize, DataTypes) {
   Admin.associate = function(models) {
     Admin.belongsTo(models.account, {
       onDelete: "CASCADE",
+      hooks: true,
       foreignKey: {
         allowNull: false
       }
