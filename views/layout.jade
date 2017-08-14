@@ -25,7 +25,7 @@ html
             span.sr-only
               Toggle navigation
           a.navbar-brand(href="/")
-            | Cabinet Dentaire
+            | DogBiz Billboard
         div.collapse.navbar-collapse#bs-example-navbar-collapse-1
           if authenticated
             ul.nav.navbar-nav
@@ -35,59 +35,33 @@ html
                   role="button",
                   aria-haspopup="true",
                   aria-expanded="false")
-                  | Item
+                  | Dogs
                   span.caret
                 ul.dropdown-menu
                   li
-                    a(href="/items")
-                      | Items list
+                    a(href="/dogs")
+                      | Dogs list
                   if isAdmin
                     li
-                      a(href="/items/create")
-                        | Create item
+                      a(href="/dogs/create")
+                        | Create dog profile
+              li.dropdown
+                a.dropdown-toggle(href="",
+                  data-toggle="dropdown",
+                  role="button",
+                  aria-haspopup="true",
+                  aria-expanded="false")
+                  | Contests
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href="/contests")
+                      | Contests List
+                  if isAdmin
+                    li
+                      a(href="/contests/create")
+                        | Add Contest
               if isAdmin
-                li.dropdown
-                  a.dropdown-toggle(href="",
-                    data-toggle="dropdown",
-                    role="button",
-                    aria-haspopup="true",
-                    aria-expanded="false")
-                    | Accounts
-                    span.caret
-                  ul.dropdown-menu
-                    li
-                      a(href="/accounts")
-                        | Accounts List
-                li.dropdown
-                  a.dropdown-toggle(href="",
-                    data-toggle="dropdown",
-                    role="button",
-                    aria-haspopup="true",
-                    aria-expanded="false")
-                    | Customers
-                    span.caret
-                  ul.dropdown-menu
-                    li
-                      a(href="/customers")
-                        | Customers List
-                    li
-                      a(href="/customers/create")
-                        | Create Customer
-                li.dropdown
-                  a.dropdown-toggle(href="",
-                    data-toggle="dropdown",
-                    role="button",
-                    aria-haspopup="true",
-                    aria-expanded="false")
-                    | Sellers
-                    span.caret
-                  ul.dropdown-menu
-                    li
-                      a(href="/sellers")
-                        | Sellers List
-                    li
-                      a(href="/sellers/create")
-                        | Create Seller
                 li.dropdown
                   a.dropdown-toggle(href="",
                     data-toggle="dropdown",
@@ -103,6 +77,21 @@ html
                     li
                       a(href="/admins/create")
                         | Create Admin
+                li.dropdown
+                  a.dropdown-toggle(href="",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Breed
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/breeds")
+                        | Breeds List
+                    li
+                      a(href="/breeds/create")
+                        | Add new Breed
           ul.nav.navbar-nav.navbar-right
             if authenticated
               li.dropdown
