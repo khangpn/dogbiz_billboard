@@ -1,0 +1,27 @@
+form.form-horizontal(action=(!breed || breed.isNewRecord) ? 
+'/breeds' : '/breeds/'+breed.id, method="post")
+  if breed
+    input.form-control(type='hidden',
+      name='id',
+      id='Breed_id',
+      value=breed.id)
+    input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_name') Name
+    div.col-sm-10
+      input.form-control(type='text',
+        name='name',
+        id='Breed_name',
+        placeholder='Name',
+        value= breed ? breed.name : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Breed_note',
+        placeholder='Note',
+      )=breed ? breed.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')

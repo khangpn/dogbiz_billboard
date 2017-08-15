@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Breed Details
+    div.panel-body
+      div.row
+        label.col-md-1 Name:
+        div.col-md-11
+          = breed.name
+      div.row
+        label.col-md-1 Note:
+        div.col-md-11
+          = breed.note
+      if isAdmin
+        div.row
+          div.col-sm-1
+            form.form-horizontal(action='/breeds/'+breed.id, method="post")
+              input(type="hidden", name="_method", value="delete")
+              input.btn.btn-danger(type='submit', value='Delete Breed') 
+          div.col-sm-offset-2.col-sm-3
+            a.btn.btn-default(href='/breeds/'+breed.id+'/edit') 
+              | Edit Breed
