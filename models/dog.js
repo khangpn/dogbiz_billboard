@@ -17,17 +17,12 @@ module.exports = function(sequelize, DataTypes) {
       },
       birthday: { 
         type: DataTypes.DATEONLY, 
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Birthday is required"
-          }
-        }
+        allowNull: false
       },
-      sex: { 
+      gender: { 
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true //true: male, false: female
+        defaultValue: false //true: male, false: female
       },
       parents: { 
         type: DataTypes.STRING, 

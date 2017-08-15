@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Dog Profile
+    div.panel-body
+      div.container-fluid
+        div.row
+          div.col-md-4
+            img.img-responsive(
+              src=dog.photo
+            )
+          div.col-md-8
+            div.container-fluid
+              div.row
+                label.col-md-2 Name:
+                div.col-md-10
+                  = dog.name
+              div.row
+                label.col-md-2 Breed:
+                div.col-md-10
+                  = dog.breed ? dog.breed.name : "N/A"
+              div.row
+                label.col-md-2 Birthday:
+                div.col-md-10
+                  = dog.birthday
+              div.row
+                label.col-md-2 Gender:
+                div.col-md-10
+                  = dog.gender ? "Male" : "Female"
+              div.row
+                label.col-md-2 Parents:
+                div.col-md-10
+                  = dog.parents
+              div.row
+                label.col-md-2 Address:
+                div.col-md-10
+                  = dog.address
+              div.row
+                label.col-md-2 Note:
+                div.col-md-10
+                  = dog.note
+              if isAdmin
+                div.row
+                  div.col-sm-1
+                    form.form-horizontal(action='/dogs/'+dog.id, method="post")
+                      input(type="hidden", name="_method", value="delete")
+                      input.btn.btn-danger(type='submit', value='Delete Dog') 
+                  div.col-sm-offset-2.col-sm-3
+                    a.btn.btn-default(href='/dogs/'+dog.id+'/edit') 
+                      | Edit Dog Profile

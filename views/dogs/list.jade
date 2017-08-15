@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Dogs List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              if isAdmin
+                th ID
+              th Name
+              th Gender
+              th Breed
+              th Score
+          tbody
+            for dog in dogs
+              tr
+                if isAdmin
+                  td
+                    a(href='/dogs/' + dog.id)=dog.id
+                td
+                  a(href='/dogs/' + dog.id)=dog.name
+                td
+                  =dog.gender ? "Male" : "Female"
+                td
+                  a(href='/breeds/' + dog.breed.id)=dog.breed.name
+                td
+                  =dog.score

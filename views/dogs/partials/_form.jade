@@ -1,0 +1,76 @@
+form.form-horizontal(action=(!dog || dog.isNewRecord) ? 
+'/dogs' : '/dogs/'+dog.id, method="post")
+  if dog
+    input.form-control(type='hidden',
+      name='id',
+      id='Dog_id',
+      value=dog.id)
+    input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_name') Name
+    div.col-sm-10
+      input.form-control(type='text',
+        name='name',
+        id='Dog_name',
+        placeholder='Name',
+        value= dog ? dog.name : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_birthday') Birthday
+    div.col-sm-10
+      input.form-control(type='text',
+        name='birthday',
+        id='Dog_birthday',
+        placeholder='Birthday',
+        value= dog ? dog.birthday : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_parents') Parents
+    div.col-sm-10
+      textarea.form-control(
+        name='parents',
+        id='Dog_parents',
+        placeholder='Parents Info',
+      )=dog ? dog.parents : ""
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_gender') Gender
+    div.col-sm-10
+      label Male
+        input.form-control(type='checkbox',
+          name='gender',
+          id='Dog_gender',
+          placeholder='gender',
+          checked=dog && dog.gender ? 'checked' : undefined) 
+  div.form-group 
+    label.col-sm-2.control-label(for='Dog_address') Address
+    div.col-sm-10
+      textarea.form-control(
+        name='address',
+        id='Dog_address',
+        placeholder='Address',
+      )=dog ? dog.address : ""
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_photo') Photo
+    div.col-sm-10
+      input.form-control(type='text',
+        name='photo',
+        id='Dog_photo',
+        placeholder='Photo URL',
+        value= dog ? dog.photo : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_breed') Breed 
+    div.col-sm-10
+      input.form-control(type='breed',
+        name='breed_id',
+        id='Dog_breed',
+        placeholder='Breed ID',
+        value= dog ? dog.breed.id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Dog_note',
+        placeholder='Note',
+      )=dog ? dog.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')
