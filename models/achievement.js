@@ -1,4 +1,5 @@
 "use strict";
+var calculateScore = require('../lib/score-helper');
 
 module.exports = function(sequelize, DataTypes) {
   var Achievement = sequelize.define('achievement', {
@@ -40,9 +41,20 @@ module.exports = function(sequelize, DataTypes) {
     },
     { 
       underscored: true,
-      freezeTableName: true
+      freezeTableName: true,
+      hooks: {
+        beforeValidate: function(achievement, options) {
+          updateScore(achievement);
+        }
+      }
     }
   );
+
+  var updateScore = achievement => {
+    if (achievement.isNewRecord || achievement.changed("rank")) {
+      achievement.setDataValue("score", calculateScore(achievement.rank));
+    }
+  }
 
   // Class methods, new from Seq v4
   Achievement.associate = function(models) {
@@ -62,9 +74,9 @@ module.exports = function(sequelize, DataTypes) {
 
   // Instance methods, from Seq v4
   // TODO: update the algorithm to calculate score
-  Achievement.prototype.calculateScore = function() {
-    this.setDataValue("score",  10);
-  };
+  //Achievement.prototype.calculateScore = function() {
+  //  this.setDataValue("score",  10);
+  //};
 
   return Achievement;
 };
