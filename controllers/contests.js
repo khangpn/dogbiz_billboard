@@ -35,7 +35,6 @@ router.post('/',
     next();
   }, function(req, res, next) {
     var data = req.body;
-    console.log(data);
     var Contest = req.models.contest;
     return Contest.create(data).then(function(contest){
       res.redirect("/contests/" + contest.id); 

@@ -46,10 +46,7 @@ module.exports = function(sequelize, DataTypes) {
       underscored: true,
       freezeTableName: true,
       hooks: {
-        beforeCreate: function(contest, options) {
-          updateContestDateAndYear(contest);
-        },
-        beforeUpdate: function(contest, options) {
+        beforeValidate: function(contest, options) {
           updateContestDateAndYear(contest);
         }
       }
@@ -57,8 +54,16 @@ module.exports = function(sequelize, DataTypes) {
   );
 
   var updateContestDateAndYear = function(contest) {
-    contest.setDataValue("startDate", parseContestDate(contest.startDate));
-    contest.setDataValue("year", getContestYear(contest.startDate));
+    if (contest.isNewRecord || contest.changed("startDate")) {
+      var dateObj = parseContestDate(contest.startDate);
+      if (dateObj !== null) {
+        contest.setDataValue("startDate", dateObj);
+        var year = getContestYear(dateObj);
+        if (year !== null) {
+          contest.setDataValue("year", year);
+        }
+      }
+    }
   }
 
   var getContestYear = function(startDate) {
