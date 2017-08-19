@@ -82,10 +82,6 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
-    Contest.belongsToMany(models.dog, {
-      through: models.achievement,
-      as: "dogs"
-    });
   };
 
   return Contest;
