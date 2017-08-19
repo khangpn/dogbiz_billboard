@@ -44,9 +44,30 @@ module.exports = function(sequelize, DataTypes) {
     },
     { 
       underscored: true,
-      freezeTableName: true
+      freezeTableName: true,
+      hooks: {
+        beforeCreate: function(contest, options) {
+          updateContestDateAndYear(contest);
+        },
+        beforeUpdate: function(contest, options) {
+          updateContestDateAndYear(contest);
+        }
+      }
     }
   );
+
+  var updateContestDateAndYear = function(contest) {
+    contest.setDataValue("startDate", parseContestDate(contest.startDate));
+    contest.setDataValue("year", getContestYear(contest.startDate));
+  }
+
+  var getContestYear = function(startDate) {
+    return typeof startDate === "object" ? startDate.getFullYear() : null;
+  }
+
+  var parseContestDate = function(startDate) {
+    return typeof startDate === "string" ? new Date(startDate) : null;
+  }
 
   // Class methods, new from Seq v4
   Contest.associate = function(models) {

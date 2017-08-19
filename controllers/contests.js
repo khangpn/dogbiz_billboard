@@ -32,11 +32,6 @@ router.post('/',
       error.status = 400;
       next(error);
     }
-    if (req.body['startDate']) {
-      var startDate = new Date(req.body['startDate']);
-      req.body['startDate'] = startDate;
-      req.body['year'] = startDate.getFullYear();
-    }
     next();
   }, function(req, res, next) {
     var data = req.body;
@@ -120,11 +115,6 @@ router.put('/:id',
       var err = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
-    }
-    if (req.body['startDate']) {
-      var startDate = new Date(req.body['startDate']);
-      req.body['startDate'] = startDate;
-      req.body['year'] = startDate.getFullYear();
     }
     next();
   }, function(req, res, next) {
