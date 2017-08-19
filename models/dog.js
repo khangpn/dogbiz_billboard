@@ -36,6 +36,11 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: true
       },
+      score: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       note: { 
         type: DataTypes.STRING,
         allowNull: true
