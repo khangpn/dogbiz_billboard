@@ -89,15 +89,17 @@ router.get('/:id',
     next();
   }, function (req, res, next) {
     var Contest = req.models.contest;
-    Contest.findById(req.params.id, {
-      include: [req.models.achievement]
-    }).then(function(contest) {
+    Contest.findById(req.params.id).then(function(contest) {
       if (!contest) {
         var err = new Error("Can't find the contest with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
-      res.render('view', {contest: contest});
+      return contest.getAchievements({
+        include: [req.models.dog]
+      }).then(achievements => {
+        res.render('view', {contest: contest, achievements: achievements});
+      });
     }).catch(function(error) {
       next(error);
     });
