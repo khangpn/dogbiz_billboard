@@ -70,17 +70,17 @@ router.delete('/:id',
     next();
   }, function(req, res, next) {
     var Achievement = req.models.achievement;
-    Achievement.destroy({
-      where: { 
-        id: req.params.id 
-      }}).then(function(affectedRow){
-        if (affectedRow == 1) return res.redirect("/achievements");
-        var err = new Error("Can't find the achievement with id: " + data.id);
-        error.status = 404;
-        next(error);
+    Achievement.findById(req.params.id).then(function(achievement) {
+      achievement.destroy().then(function() {
+        res.redirect("/achievements");
       }).catch( function(error){
         next(error);
       });
+    }).catch( function(error){
+      var err = new Error("Can't find the achievement with id: " + data.id);
+      error.status = 404;
+      next(error);
+    });
   }
 );
 
