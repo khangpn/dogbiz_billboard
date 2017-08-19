@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Achievement Profile
+    div.panel-body
+      div.container-fluid
+        div.row
+          label.col-md-2 Contest Name:
+          div.col-md-10
+            = achievement.contest.name
+        div.row
+          label.col-md-2 Contest Date:
+          div.col-md-10
+            = achievement.contest.startDate
+        div.row
+          label.col-md-2 Dog Name:
+          div.col-md-10
+            = achievement.dog.name
+        div.row
+          label.col-md-2 Category:
+          div.col-md-10
+            = achievement.category
+        div.row
+          label.col-md-2 Rank:
+          div.col-md-10
+            = achievement.rank
+        div.row
+          label.col-md-2 Score:
+          div.col-md-10
+            = achievement.score
+        div.row
+          label.col-md-2 Note:
+          div.col-md-10
+            = achievement.note
+        if isAdmin
+          div.row
+            div.col-sm-1
+              form.form-horizontal(action='/achievements/'+achievement.id, method="post")
+                input(type="hidden", name="_method", value="delete")
+                input.btn.btn-danger(type='submit', value='Delete achievement') 
+            div.col-sm-offset-2.col-sm-3
+              a.btn.btn-default(href='/achievements/'+achievement.id+'/edit') 
+                | Edit achievement Profile

@@ -1,0 +1,51 @@
+form.form-horizontal(action=(!achievement || achievement.isNewRecord) ? 
+'/achievements' : '/achievements/'+achievement.id, method="post")
+  if achievement
+    input.form-control(type='hidden',
+      name='id',
+      id='Achievement_id',
+      value=achievement.id)
+    input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_name') Contest
+    div.col-sm-10
+      input.form-control(type='text',
+        name='contest_id',
+        id='Achievement_contest_id',
+        placeholder='Contest ID',
+        value= achievement ? achievement.contest_id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_name') Dog
+    div.col-sm-10
+      input.form-control(type='text',
+        name='dog_id',
+        id='Achievement_dog_id',
+        placeholder='Dog ID',
+        value= achievement ? achievement.dog_id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_startDate') Category
+    div.col-sm-10
+      input.form-control(type='text',
+        name='category',
+        id='Achievement_category',
+        placeholder='Category',
+        value= achievement ? achievement.category : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_startDate') Rank
+    div.col-sm-10
+      input.form-control(type='text',
+        name='rank',
+        id='Achievement_rank',
+        placeholder='Rank',
+        value= achievement ? achievement.rank : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Achievement_note',
+        placeholder='Note',
+      )=achievement ? achievement.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')

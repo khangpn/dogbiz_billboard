@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Achievement List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              if isAdmin
+                th ID
+              th Contest
+              th Dog
+              th Category
+              th Rank
+          tbody
+            for achievement in achievements
+              tr
+                if isAdmin
+                  td
+                    a(href='/achievements/' + achievement.id)=achievement.id
+                td
+                  a(href='/contests/' + achievement.contest.id)=achievement.contest.name
+                td
+                  a(href='/dogs/' + achievement.dog.id)=achievement.dog.name
+                td
+                  =achievement.category
+                td
+                  =achievement.rank
