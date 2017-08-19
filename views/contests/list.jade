@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Contests List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              if isAdmin
+                th ID
+              th Name
+              th Date
+              th Address
+          tbody
+            for contest in contests
+              tr
+                if isAdmin
+                  td
+                    a(href='/contests/' + contest.id)=contest.id
+                td
+                  a(href='/contests/' + contest.id)=contest.name
+                td
+                  =contest.date
+                td
+                  =contest.address

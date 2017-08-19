@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Contest Profile
+    div.panel-body
+      div.container-fluid
+        div.row
+          label.col-md-2 Name:
+          div.col-md-10
+            = contest.name
+        div.row
+          label.col-md-2 Date:
+          div.col-md-10
+            = contest.startDate
+        div.row
+          label.col-md-2 Year:
+          div.col-md-10
+            = contest.year
+        div.row
+          label.col-md-2 Address:
+          div.col-md-10
+            = contest.address
+        div.row
+          label.col-md-2 Note:
+          div.col-md-10
+            = contest.note
+        if isAdmin
+          div.row
+            div.col-sm-1
+              form.form-horizontal(action='/contests/'+contest.id, method="post")
+                input(type="hidden", name="_method", value="delete")
+                input.btn.btn-danger(type='submit', value='Delete Contest') 
+            div.col-sm-offset-2.col-sm-3
+              a.btn.btn-default(href='/contests/'+contest.id+'/edit') 
+                | Edit Contest Profile

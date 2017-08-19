@@ -1,0 +1,43 @@
+form.form-horizontal(action=(!contest || contest.isNewRecord) ? 
+'/contests' : '/contests/'+contest.id, method="post")
+  if contest
+    input.form-control(type='hidden',
+      name='id',
+      id='Contest_id',
+      value=contest.id)
+    input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Contest_name') Name
+    div.col-sm-10
+      input.form-control(type='text',
+        name='name',
+        id='Contest_name',
+        placeholder='Name',
+        value= contest ? contest.name : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Contest_startDate') Date
+    div.col-sm-10
+      input.form-control(type='text',
+        name='startDate',
+        id='Contest_startDate',
+        placeholder='Start date',
+        value= contest ? contest.startDate : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Contest_photo') Address
+    div.col-sm-10
+      input.form-control(type='text',
+        name='address',
+        id='Contest_address',
+        placeholder='Contest address',
+        value= contest ? contest.address : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Contest_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Contest_note',
+        placeholder='Note',
+      )=contest ? contest.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')
