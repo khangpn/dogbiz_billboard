@@ -127,7 +127,9 @@ router.put('/:id',
   }, function(req, res, next) {
     var data = req.body;
     var Dog = req.models.dog;
-    return Dog.findById(data.id).then(function(dog) {
+    Dog.findById(req.params.id, {
+      include: [req.models.breed]
+    }).then(function(dog) {
         if (!dog) {
           var err = new Error("Can't find the dog with id: " + data.id);
           error.status = 404;
@@ -137,7 +139,7 @@ router.put('/:id',
       return dog.update(data).then(function(dog){
         res.render("view", {dog: dog}); 
       }, function (error) {
-        res.render("view", {dog: dog, error: error}); 
+        res.render("edit", {dog: dog, error: error}); 
       });
     }).catch( function(error){
       next(error);

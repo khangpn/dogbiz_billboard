@@ -25,11 +25,11 @@ form.form-horizontal(action=(!dog || dog.isNewRecord) ?
   div.form-group
     label.col-sm-2.control-label(for='Dog_parents') Parents
     div.col-sm-10
-      textarea.form-control(
+      input.form-control(type='text',
         name='parents',
         id='Dog_parents',
         placeholder='Parents Info',
-      )=dog ? dog.parents : ""
+        value= dog ? dog.parents : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_gender') Gender
     div.col-sm-10
@@ -42,11 +42,11 @@ form.form-horizontal(action=(!dog || dog.isNewRecord) ?
   div.form-group 
     label.col-sm-2.control-label(for='Dog_address') Address
     div.col-sm-10
-      textarea.form-control(
+      input.form-control(type='text',
         name='address',
         id='Dog_address',
         placeholder='Address',
-      )=dog ? dog.address : ""
+        value= dog ? dog.address : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_photo') Photo
     div.col-sm-10
