@@ -61,6 +61,22 @@ html
                     li
                       a(href="/contests/create")
                         | Add Contest
+              li.dropdown
+                a.dropdown-toggle(href="",
+                  data-toggle="dropdown",
+                  role="button",
+                  aria-haspopup="true",
+                  aria-expanded="false")
+                  | Achievements
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href="/achievements")
+                      | Achievements List
+                  if isAdmin
+                    li
+                      a(href="/achievements/create")
+                        | Add Achievement
               if isAdmin
                 li.dropdown
                   a.dropdown-toggle(href="",
