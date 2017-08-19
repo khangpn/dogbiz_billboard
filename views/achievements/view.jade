@@ -9,7 +9,8 @@ block content
         div.row
           label.col-md-2 Contest Name:
           div.col-md-10
-            = achievement.contest.name
+            a(href='/contests/'+achievement.contest.id) 
+              = achievement.contest.name
         div.row
           label.col-md-2 Contest Date:
           div.col-md-10
@@ -17,7 +18,8 @@ block content
         div.row
           label.col-md-2 Dog Name:
           div.col-md-10
-            = achievement.dog.name
+            a(href='/dogs/'+achievement.dog.id) 
+              = achievement.dog.name
         div.row
           label.col-md-2 Category:
           div.col-md-10
