@@ -27,6 +27,22 @@ models.sequelize.sync().then(function() {
       breed_id: breed.id
     });
   });
+
+  models.contest.create({
+    name: "HCM open 2",
+    startDate: new Date(2017, 5, 14),
+    note: "An open show for all kinds of dog"
+  }).then(function(breed) {
+    return models.dog.create({
+      name: "Ly Ly",
+      birthday: new Date(2015, 5, 14),
+      gender: false,
+      parents: "Mother Dog, Father Dog",
+      address: "Brussels Belgium",
+      note: "A pretty dog",
+      breed_id: breed.id
+    });
+  });
 }).then(function() {
   console.log("Done syncing");
 });
