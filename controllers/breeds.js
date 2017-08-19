@@ -92,7 +92,9 @@ router.get('/:id',
         error.status = 404;
         next(error);
       }
-      res.render('view', {breed: breed});
+      breed.getDogs().then(dogs => {
+        res.render('view', {breed: breed, dogs: dogs});
+      });
     }).catch(function(error) {
       next(error);
     });
