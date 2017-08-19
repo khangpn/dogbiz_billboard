@@ -173,7 +173,7 @@ router.put('/:id',
         }
 
       return admin.update(data).then(function(admin){
-        res.render("view", {admin: admin}); 
+        res.redirect('/admins/' + admin.id); 
       }, function (error) {
         res.render("view", {admin: admin, error: error}); 
       });

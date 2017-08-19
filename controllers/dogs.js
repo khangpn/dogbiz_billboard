@@ -137,7 +137,7 @@ router.put('/:id',
         }
 
       return dog.update(data).then(function(dog){
-        res.render("view", {dog: dog}); 
+        res.redirect('/dogs/' + dog.id); 
       }, function (error) {
         res.render("edit", {dog: dog, error: error}); 
       });

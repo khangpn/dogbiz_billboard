@@ -144,7 +144,7 @@ router.put('/:id',
         }
 
       return breed.update(data).then(function(breed){
-        res.render("view", {breed: breed}); 
+        res.redirect('/breeds/' + breed.id); 
       }, function (error) {
         res.render("view", {breed: breed, error: error}); 
       });

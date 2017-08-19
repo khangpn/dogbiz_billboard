@@ -126,7 +126,7 @@ router.put('/:id',
         next(error);
       }
       return contest.update(data).then(function(contest){
-        res.render("view", {contest: contest}); 
+        res.redirect("/contests/" + contest.id); 
       }, function (error) {
         res.render("edit", {contest: contest, error: error}); 
       });
