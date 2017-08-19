@@ -102,7 +102,11 @@ router.get('/:id',
         error.status = 404;
         next(error);
       }
-      res.render('view', {dog: dog});
+      return dog.getAchievements({
+        include: [req.models.contest]
+      }).then(achievements => {
+        res.render('view', {dog: dog, achievements: achievements});
+      });
     }).catch(function(error) {
       next(error);
     });
