@@ -45,6 +45,34 @@ module.exports = function(sequelize, DataTypes) {
       hooks: {
         beforeValidate: function(achievement, options) {
           updateScore(achievement);
+        },
+        beforeDestroy: function(achievement, options) {
+          return achievement.getDog().then(function(dog) {
+            let score = dog.score;
+            score -= achievement.score;
+            dog.setDataValue("score", score);
+            return dog.save().then(function(dog) {
+              return sequelize.Promise.resolve();
+            }).catch ( function(error){
+              return sequelize.Promise.reject(error);
+            });
+          }).catch ( function(error){
+            return sequelize.Promise.reject(error);
+          });
+        },
+        beforeCreate: function(achievement, options) {
+          return achievement.getDog().then(function(dog) {
+            let score = dog.score;
+            score += achievement.score;
+            dog.setDataValue("score", score);
+            return dog.save().then(function(dog) {
+              return sequelize.Promise.resolve();
+            }).catch ( function(error){
+              return sequelize.Promise.reject(error);
+            });
+          }).catch ( function(error){
+            return sequelize.Promise.reject(error);
+          });
         }
       }
     }
@@ -65,7 +93,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     });
     Achievement.belongsTo(models.contest, {
-      onDelete: "CASCADE",
       foreignKey: {
         allowNull: false
       }
