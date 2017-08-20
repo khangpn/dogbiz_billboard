@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Run this in Guest OS
+NODE_ENV=development DEBUG=dogbiz npm start
