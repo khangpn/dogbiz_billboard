@@ -62,3 +62,6 @@ config/*.js
 
 # KnP: disable api
 api/
+
+# KnP: remove static start script 
+start.sh
