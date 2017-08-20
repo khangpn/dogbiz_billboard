@@ -18,10 +18,14 @@ models.sequelize.sync().then(function() {
     note: "A list of pug dogs"
   }).then(function(breed) {
     return models.dog.create({
+      id: "ID101",
       name: "Ly Ly",
       birthday: new Date(2015, 5, 14),
       gender: false,
-      parents: "Mother Dog, Father Dog",
+      dam: "Mother Dog",
+      sire: "Father Dog",
+      owner: "Khang",
+      photo: "http://cdn2-www.dogtime.com/assets/uploads/2010/12/senior-dog-2.jpg",
       address: "Brussels Belgium",
       note: "A pretty dog",
       breed_id: breed.id

@@ -23,13 +23,29 @@ form.form-horizontal(action=(!dog || dog.isNewRecord) ?
         placeholder='Birthday',
         value= dog ? dog.birthday : "")
   div.form-group
-    label.col-sm-2.control-label(for='Dog_parents') Parents
+    label.col-sm-2.control-label(for='Dog_sire') Sire
     div.col-sm-10
       input.form-control(type='text',
-        name='parents',
-        id='Dog_parents',
-        placeholder='Parents Info',
-        value= dog ? dog.parents : "")
+        name='sire',
+        id='Dog_sire',
+        placeholder='Sire Info',
+        value= dog ? dog.sire : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_dam') Dam
+    div.col-sm-10
+      input.form-control(type='text',
+        name='dam',
+        id='Dog_dam',
+        placeholder='Dam Info',
+        value= dog ? dog.dam : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_owner') Owner
+    div.col-sm-10
+      input.form-control(type='text',
+        name='owner',
+        id='Dog_owner',
+        placeholder='Owner Info',
+        value= dog ? dog.owner : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_gender') Gender
     div.col-sm-10

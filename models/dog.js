@@ -2,6 +2,11 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Dog = sequelize.define('dog', {
+      id: { 
+        type: DataTypes.STRING, 
+        allowNull: false,
+        primaryKey: true
+      },
       name: { 
         type: DataTypes.STRING, 
         allowNull: false,
@@ -24,7 +29,15 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false,
         defaultValue: false //true: male, false: female
       },
-      parents: { 
+      sire: { 
+        type: DataTypes.STRING, 
+        allowNull: true
+      },
+      dam: { 
+        type: DataTypes.STRING, 
+        allowNull: true
+      },
+      owner: { 
         type: DataTypes.STRING, 
         allowNull: true
       },
