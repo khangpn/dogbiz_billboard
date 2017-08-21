@@ -1,7 +1,9 @@
 var models = require('./../models');
 
 models.sequelize.sync().then(function() {
-  models.account.create({
+  console.log(">>>>>>>>>> Done creating tables");
+}).then(function() {
+  return models.account.create({
     email: "khang@dogbiz.com",
     is_admin: true,
     password: "1234567890",
@@ -10,10 +12,12 @@ models.sequelize.sync().then(function() {
     return models.admin.create({
       fullname: "Khang Nguyen",
       account_id: account.id
-    })
+    }).then(function() {
+      console.log(">>>>>>>>>> Done creating accounts");
+    });
   });
-
-  models.breed.create({
+}).then(function() {
+  return models.breed.create({
     name: "Pug",
     note: "A list of pug dogs"
   }).then(function(breed) {
@@ -30,7 +34,7 @@ models.sequelize.sync().then(function() {
       note: "A pretty dog",
       breed_id: breed.id
     }).then(function(dog) {
-      models.contest.create({
+      return models.contest.create({
         name: "HCM open 2",
         startDate: new Date(2017, 5, 14),
         address: "Ho Chi Minh City, Vietnam",
@@ -42,11 +46,10 @@ models.sequelize.sync().then(function() {
           dog_id: dog.id,
           contest_id: contest.id,
           note: "An impressive dog"
+        }).then(function() {
+          console.log(">>>>>>>>>> Done creating dogs");
         });
       });
     });
   });
-
-}).then(function() {
-  console.log("Done syncing");
 });
