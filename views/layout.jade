@@ -27,87 +27,87 @@ html
           a.navbar-brand(href="/")
             | DogBiz Billboard
         div.collapse.navbar-collapse#bs-example-navbar-collapse-1
-          if authenticated
-            ul.nav.navbar-nav
+          //if authenticated
+          ul.nav.navbar-nav
+            li.dropdown
+              a.dropdown-toggle(href="",
+                data-toggle="dropdown",
+                role="button",
+                aria-haspopup="true",
+                aria-expanded="false")
+                | Dogs
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href="/dogs")
+                    | Dogs list
+                if isAdmin
+                  li
+                    a(href="/dogs/create")
+                      | Create dog profile
+            li.dropdown
+              a.dropdown-toggle(href="",
+                data-toggle="dropdown",
+                role="button",
+                aria-haspopup="true",
+                aria-expanded="false")
+                | Contests
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href="/contests")
+                    | Contests List
+                if isAdmin
+                  li
+                    a(href="/contests/create")
+                      | Add Contest
+            li.dropdown
+              a.dropdown-toggle(href="",
+                data-toggle="dropdown",
+                role="button",
+                aria-haspopup="true",
+                aria-expanded="false")
+                | Achievements
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href="/achievements")
+                    | Achievements List
+                if isAdmin
+                  li
+                    a(href="/achievements/create")
+                      | Add Achievement
+            if isAdmin
               li.dropdown
                 a.dropdown-toggle(href="",
                   data-toggle="dropdown",
                   role="button",
                   aria-haspopup="true",
                   aria-expanded="false")
-                  | Dogs
+                  | Admin
                   span.caret
                 ul.dropdown-menu
                   li
-                    a(href="/dogs")
-                      | Dogs list
-                  if isAdmin
-                    li
-                      a(href="/dogs/create")
-                        | Create dog profile
+                    a(href="/admins")
+                      | Admin List
+                  li
+                    a(href="/admins/create")
+                      | Create Admin
               li.dropdown
                 a.dropdown-toggle(href="",
                   data-toggle="dropdown",
                   role="button",
                   aria-haspopup="true",
                   aria-expanded="false")
-                  | Contests
+                  | Breed
                   span.caret
                 ul.dropdown-menu
                   li
-                    a(href="/contests")
-                      | Contests List
-                  if isAdmin
-                    li
-                      a(href="/contests/create")
-                        | Add Contest
-              li.dropdown
-                a.dropdown-toggle(href="",
-                  data-toggle="dropdown",
-                  role="button",
-                  aria-haspopup="true",
-                  aria-expanded="false")
-                  | Achievements
-                  span.caret
-                ul.dropdown-menu
+                    a(href="/breeds")
+                      | Breeds List
                   li
-                    a(href="/achievements")
-                      | Achievements List
-                  if isAdmin
-                    li
-                      a(href="/achievements/create")
-                        | Add Achievement
-              if isAdmin
-                li.dropdown
-                  a.dropdown-toggle(href="",
-                    data-toggle="dropdown",
-                    role="button",
-                    aria-haspopup="true",
-                    aria-expanded="false")
-                    | Admin
-                    span.caret
-                  ul.dropdown-menu
-                    li
-                      a(href="/admins")
-                        | Admin List
-                    li
-                      a(href="/admins/create")
-                        | Create Admin
-                li.dropdown
-                  a.dropdown-toggle(href="",
-                    data-toggle="dropdown",
-                    role="button",
-                    aria-haspopup="true",
-                    aria-expanded="false")
-                    | Breed
-                    span.caret
-                  ul.dropdown-menu
-                    li
-                      a(href="/breeds")
-                        | Breeds List
-                    li
-                      a(href="/breeds/create")
-                        | Add new Breed
+                    a(href="/breeds/create")
+                      | Add new Breed
           ul.nav.navbar-nav.navbar-right
             if authenticated
               li.dropdown
