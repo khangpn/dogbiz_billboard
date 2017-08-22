@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var partials = express.Router();
+var DateHelper = require("../lib/date-helper.js");
 
 //----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
@@ -31,6 +32,20 @@ router.post('/',
       var err = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
+    }
+    var startDate = req.body.startDate;
+    var Sequelize = req.models.Sequelize;
+    if (!DateHelper.isValid(startDate)) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The start date format is invalid (DD-MM-YYY or DD/MM/YYYY)",
+        "invalid format",
+        "startDate",
+        startDate
+      );
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+      return res.render("create", {error: error});
+    } else {
+      req.body.startDate = DateHelper.formatToISOString(startDate);
     }
     next();
   }, function(req, res, next) {
