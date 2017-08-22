@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var partials = express.Router();
+var DateHelper = require("../lib/date-helper.js");
 
 //----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
@@ -32,17 +33,41 @@ router.post('/',
       error.status = 400;
       next(error);
     }
-    if (req.body['birthday']) {
-      var birthday = new Date(req.body['birthday']);
-      req.body['birthday'] = birthday;
+    if (req.body.gender == undefined) {
+      req.body.gender = false;
+    }
+    var birthday = req.body.birthday;
+    var Sequelize = req.models.Sequelize;
+    if (!DateHelper.isISO(birthday)) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The birthday format is invalid (YYYY-MM-DD or YYYY/MM/DD)",
+        "invalid format",
+        "birthday",
+        birthday
+      );
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+      return res.render("create", {error: error});
     }
     next();
   }, function(req, res, next) {
     var data = req.body;
     var Dog = req.models.dog;
-
-    return Dog.create(data) .then(function(dog){
-      res.redirect("/dogs/" + dog.id); 
+    var Breed = req.models.breed;
+    return Breed.findById(data.breed_id).then(function(breed) {
+      if (!breed) {
+        var Sequelize = req.models.Sequelize;
+        var errorItem = new Sequelize.ValidationErrorItem(
+          "Can't find the breed with id: " + data.breed_id,
+          "record not found",
+          "breed_id",
+          data.breed_id
+        );
+        var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+        return res.render("create", {error: error});
+      }
+      return Dog.create(data).then(function(dog){
+        res.redirect("/dogs/" + dog.id); 
+      })
     }).catch ( function(error){
       res.render("create", {error: error});
     });
@@ -127,27 +152,53 @@ router.put('/:id',
     if (req.body.gender == undefined) {
       req.body.gender = false;
     }
+    var birthday = req.body.birthday;
+    var Sequelize = req.models.Sequelize;
+    if (!DateHelper.isISO(birthday)) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The birthday format is invalid (YYYY-MM-DD or YYYY/MM/DD)",
+        "invalid format",
+        "birthday",
+        birthday
+      );
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+      return res.render("create", {error: error});
+    }
     next();
   }, function(req, res, next) {
     var data = req.body;
     var Dog = req.models.dog;
+    var Breed = req.models.breed;
     Dog.findById(req.params.id, {
-      include: [req.models.breed]
+      include: [Breed]
     }).then(function(dog) {
         if (!dog) {
           var err = new Error("Can't find the dog with id: " + data.id);
           error.status = 404;
           next(error);
         }
-
-      return dog.update(data).then(function(dog){
-        res.redirect('/dogs/' + dog.id); 
-      }, function (error) {
-        res.render("edit", {dog: dog, error: error}); 
-      });
-    }).catch( function(error){
-      next(error);
+        return Breed.findById(data.breed_id).then(function(breed) {
+          if (!breed) {
+            var Sequelize = req.models.Sequelize;
+            var errorItem = new Sequelize.ValidationErrorItem(
+              "Can't find the breed with id: " + data.breed_id,
+              "record not found",
+              "breed_id",
+              data.breed_id
+            );
+            var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+            throw error;
+          }
+          return dog.update(data).then(function(dog){
+            res.redirect('/dogs/' + dog.id); 
+          });
+        }).catch ( function(error){
+          res.render("edit", {dog:dog, error: error});
+        });
+    }).catch ( function(error){
+      res.render("edit", {error: error});
     });
+
   }
 );
 
