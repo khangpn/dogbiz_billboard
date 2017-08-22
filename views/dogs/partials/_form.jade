@@ -1,11 +1,14 @@
 form.form-horizontal(action=(!dog || dog.isNewRecord) ? 
 '/dogs' : '/dogs/'+dog.id, method="post")
   if dog
-    input.form-control(type='hidden',
-      name='id',
-      id='Dog_id',
-      value=dog.id)
     input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Dog_name') ID
+    div.col-sm-10
+      input.form-control(type='text',
+        name='id',
+        id='Dog_id',
+        value= dog ? dog.id : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_name') Name
     div.col-sm-10
