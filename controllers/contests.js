@@ -35,17 +35,15 @@ router.post('/',
     }
     var startDate = req.body.startDate;
     var Sequelize = req.models.Sequelize;
-    if (!DateHelper.isValid(startDate)) {
+    if (!DateHelper.isISO(startDate)) {
       var errorItem = new Sequelize.ValidationErrorItem(
-        "The start date format is invalid (DD-MM-YYY or DD/MM/YYYY)",
+        "The start date format is invalid (YYYY-MM-DD or YYYY/MM/DD)",
         "invalid format",
         "startDate",
         startDate
       );
       var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
       return res.render("create", {error: error});
-    } else {
-      req.body.startDate = DateHelper.formatToISOString(startDate);
     }
     next();
   }, function(req, res, next) {
@@ -131,6 +129,18 @@ router.put('/:id',
       var err = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
+    }
+    var startDate = req.body.startDate;
+    var Sequelize = req.models.Sequelize;
+    if (!DateHelper.isISO(startDate)) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The start date format is invalid (YYYY-MM-DD or YYYY/MM/DD)",
+        "invalid format",
+        "startDate",
+        startDate
+      );
+      var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
+      return res.render("create", {error: error});
     }
     next();
   }, function(req, res, next) {
