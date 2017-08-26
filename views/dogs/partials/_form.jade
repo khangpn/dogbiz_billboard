@@ -1,14 +1,15 @@
+link(rel='stylesheet', href='/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css')
+script(src='/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')
+script(src='/javascripts/dogs/partials/_form.js')
+
 form.form-horizontal(action=(!dog || dog.isNewRecord) ? 
 '/dogs' : '/dogs/'+dog.id, method="post")
   if dog
+    input.form-control(type='hidden',
+      name='id',
+      id='Dog_id',
+      value=dog.id)
     input(type="hidden", name="_method", value="put")
-  div.form-group
-    label.col-sm-2.control-label(for='Dog_name') ID
-    div.col-sm-10
-      input.form-control(type='text',
-        name='id',
-        id='Dog_id',
-        value= dog ? dog.id : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_name') Name
     div.col-sm-10
@@ -20,11 +21,16 @@ form.form-horizontal(action=(!dog || dog.isNewRecord) ?
   div.form-group
     label.col-sm-2.control-label(for='Dog_birthday') Birthday
     div.col-sm-10
-      input.form-control(type='text',
-        name='birthday',
-        id='Dog_birthday',
-        placeholder='Birthday',
-        value= dog ? dog.birthday : "")
+      div.input-group.date
+        input.form-control(type='text',
+          name='birthday',
+          id='Dog_birthday',
+          class='form-control',
+          placeholder='Birthday',
+          readonly,
+          value= dog ? dog.birthday : "")
+        span.input-group-addon
+          i.glyphicon.glyphicon-th
   div.form-group
     label.col-sm-2.control-label(for='Dog_sire') Sire
     div.col-sm-10
