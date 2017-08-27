@@ -1,11 +1,16 @@
 form.form-horizontal(action=(!breed || breed.isNewRecord) ? 
-'/breeds' : '/breeds/'+breed.id, method="post")
+'/breeds' : '/breeds/'+breed.fci, method="post")
   if breed
-    input.form-control(type='hidden',
-      name='id',
-      id='Breed_id',
-      value=breed.id)
     input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_name') FCI
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fci',
+        id='Breed_fci',
+        placeholder='FIC',
+        readonly= breed ? true : false,
+        value= breed ? breed.fci : "")
   div.form-group
     label.col-sm-2.control-label(for='Breed_name') Name
     div.col-sm-10
@@ -14,6 +19,46 @@ form.form-horizontal(action=(!breed || breed.isNewRecord) ?
         id='Breed_name',
         placeholder='Name',
         value= breed ? breed.name : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_section') Section
+    div.col-sm-10
+      input.form-control(type='text',
+        name='section',
+        id='Breed_section',
+        placeholder='Section',
+        value= breed ? breed.section : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_country') Country
+    div.col-sm-10
+      input.form-control(type='text',
+        name='country',
+        id='Breed_country',
+        placeholder='Country',
+        value= breed ? breed.country : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_url') URL
+    div.col-sm-10
+      input.form-control(type='text',
+        name='url',
+        id='Breed_url',
+        placeholder='URL',
+        value= breed ? breed.url : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_pdf') PDF
+    div.col-sm-10
+      input.form-control(type='text',
+        name='pdf',
+        id='Breed_pdf',
+        placeholder='PDF',
+        value= breed ? breed.pdf : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Breed_image') Image
+    div.col-sm-10
+      input.form-control(type='text',
+        name='image',
+        id='Breed_image',
+        placeholder='Image',
+        value= breed ? breed.image : "")
   div.form-group
     label.col-sm-2.control-label(for='Breed_note') Note
     div.col-sm-10

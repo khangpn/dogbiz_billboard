@@ -9,12 +9,12 @@ block content
         table.table.table-hover
           thead
             tr
-              th ID
+              th FCI
               th Name
           tbody
             for breed in breeds
               tr
                 td
-                  a(href='/breeds/' + breed.id)=breed.id
+                  a(href='/breeds/' + breed.fci)=breed.fci
                 td
                   a(href='/breeds/' + breed.id)=breed.name

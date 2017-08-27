@@ -87,11 +87,6 @@ module.exports = function(sequelize, DataTypes) {
   // Class methods, new from Seq v4
   Breed.associate = function(models) {
     Breed.hasMany(models.dog, {});
-    
-    Breed.belongsToMany(Breed, {
-      through: models.breed_collection,
-      as: "subBreeds"
-    });
   };
 
   return Breed;

@@ -38,7 +38,7 @@ router.post('/',
     var Breed = req.models.breed;
 
     return Breed.create(data).then(function(breed){
-      res.redirect("/breeds/" + breed.id); 
+      res.redirect("/breeds/" + breed.fci); 
     }).catch(function(error){
       res.render("create", {error: error});
     });
@@ -57,7 +57,7 @@ router.get('/create', function(req, res, next) {
   }
 );
 
-router.delete('/:id',
+router.delete('/:fci',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -68,7 +68,7 @@ router.delete('/:id',
     next();
   }, function(req, res, next) {
     var Breed = req.models.breed;
-    Breed.findById(req.params.id).then(function(breed){
+    Breed.findById(req.params.fci).then(function(breed){
       return breed.destroy().then(function() {
         res.redirect("/breeds");
       });
@@ -78,7 +78,7 @@ router.delete('/:id',
   }
 );
 
-router.get('/:id', 
+router.get('/:fci', 
   function (req, res, next) {
 
     // request validation here
@@ -86,13 +86,13 @@ router.get('/:id',
     next();
   }, function (req, res, next) {
     var Breed = req.models.breed;
-    Breed.findById(req.params.id).then(function(breed) {
+    Breed.findById(req.params.fci).then(function(breed) {
       if (!breed) {
-        var err = new Error("Can't find the breed with id: " + req.params.id);
+        var err = new Error("Can't find the breed with fci: " + req.params.fci);
         error.status = 404;
         next(error);
       }
-      breed.getDogs().then(dogs => {
+      return breed.getDogs().then(dogs => {
         res.render('view', {breed: breed, dogs: dogs});
       });
     }).catch(function(error) {
@@ -100,7 +100,7 @@ router.get('/:id',
     });
 });
 
-router.get('/:id/edit', 
+router.get('/:fci/edit', 
   function (req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -110,9 +110,9 @@ router.get('/:id/edit',
     next();
   }, function (req, res, next) {
     var Breed = req.models.breed;
-    Breed.findById(req.params.id).then(function(breed) {
+    Breed.findById(req.params.fci).then(function(breed) {
       if (!breed) {
-        var err = new Error("Can't find the breed with id: " + req.params.id);
+        var err = new Error("Can't find the breed with fci: " + req.params.fci);
         error.status = 404;
         next(error);
       }
@@ -122,7 +122,7 @@ router.get('/:id/edit',
     });
 });
 
-router.put('/:id',
+router.put('/:fci',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -137,16 +137,17 @@ router.put('/:id',
     next();
   }, function(req, res, next) {
     var data = req.body;
+    var fci= req.params.fci;
     var Breed = req.models.breed;
-    return Breed.findById(data.id).then(function(breed) {
-        if (!breed) {
-          var err = new Error("Can't find the breed with id: " + data.id);
-          error.status = 404;
-          next(error);
-        }
+    return Breed.findById(fci).then(function(breed) {
+      if (!breed) {
+        var error = new Error("Can't find the breed with fci: " + fci);
+        error.status = 404;
+        next(error);
+      }
 
       return breed.update(data).then(function(breed){
-        res.redirect('/breeds/' + breed.id); 
+        res.redirect('/breeds/' + breed.fci); 
       }, function (error) {
         res.render("view", {breed: breed, error: error}); 
       });
