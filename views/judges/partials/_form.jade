@@ -1,0 +1,27 @@
+form.form-horizontal(action=(!judge || judge.isNewRecord) ? 
+'/judges' : '/judges/'+judge.id, method="post")
+  if judge
+    input.form-control(type='hidden',
+      name='id',
+      id='Judge_id',
+      value=judge.id)
+    input(type="hidden", name="_method", value="put")
+  div.form-group
+    label.col-sm-2.control-label(for='Judge_fullname') Fullname
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fullname',
+        id='Judge_fullname',
+        placeholder='Fullname',
+        value= judge ? judge.fullname : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Judge_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Judge_note',
+        placeholder='Note',
+      )=judge ? judge.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')

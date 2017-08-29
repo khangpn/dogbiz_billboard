@@ -67,6 +67,22 @@ html
                 role="button",
                 aria-haspopup="true",
                 aria-expanded="false")
+                | Judges
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href="/judges")
+                    | Judges list
+                if isAdmin
+                  li
+                    a(href="/judges/create")
+                      | Create judge profile
+            li.dropdown
+              a.dropdown-toggle(href="",
+                data-toggle="dropdown",
+                role="button",
+                aria-haspopup="true",
+                aria-expanded="false")
                 | Achievements
                 span.caret
               ul.dropdown-menu
