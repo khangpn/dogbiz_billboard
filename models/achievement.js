@@ -28,6 +28,7 @@ module.exports = function(sequelize, DataTypes) {
       score: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0,
         validate: {
           notEmpty: {
             msg: "Score is required"
@@ -48,6 +49,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         beforeDestroy: function(achievement, options) {
           return achievement.getDog().then(function(dog) {
+            if (!dog) throw new Error("Can't find the dog with id: " + achievement.dog_id);
             let score = dog.score;
             score -= achievement.score;
             dog.setDataValue("score", score);
@@ -62,6 +64,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         beforeCreate: function(achievement, options) {
           return achievement.getDog().then(function(dog) {
+            if (!dog) throw new Error("Can't find the dog with id: " + achievement.dog_id);
             let score = dog.score;
             score += achievement.score;
             dog.setDataValue("score", score);
