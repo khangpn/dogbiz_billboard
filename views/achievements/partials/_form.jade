@@ -23,6 +23,14 @@ form.form-horizontal(action=(!achievement || achievement.isNewRecord) ?
         placeholder='Dog ID',
         value= achievement ? achievement.dog_id : "")
   div.form-group
+    label.col-sm-2.control-label(for='Achievement_name') Judge
+    div.col-sm-10
+      input.form-control(type='text',
+        name='judge_id',
+        id='Achievement_judge_id',
+        placeholder='Judge ID',
+        value= achievement ? achievement.judge_id : "")
+  div.form-group
     label.col-sm-2.control-label(for='Achievement_startDate') Category
     div.col-sm-10
       input.form-control(type='text',
