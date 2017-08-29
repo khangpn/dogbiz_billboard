@@ -2,6 +2,23 @@ var express = require('express');
 var router = express.Router();
 var partials = express.Router();
 
+var categories = [
+"Winner Dog",
+"Winner Bitch",
+"Best of Winner",
+"Class Winner",
+"Best of Opposite Sex (Reserve Best Of Breed)",
+"Best of Breed",
+"Best In Group",
+"Reserve Best In Group",
+"Best in Show",
+"Reserve Best in Show"
+];
+
+var getJudgeList = function(Judge, cb) {
+  return Judge.findAll().then(cb);
+};
+
 //----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
 
@@ -42,7 +59,10 @@ router.post('/',
     return Achievement.create(data).then(function(achievement){
       res.redirect("/achievements/" + achievement.id); 
     }).catch ( function(error){
-      res.render("create", {error: error});
+      var cb = function(judges) {
+        res.render("create", {error: error, judges: judges, categories: categories});
+      }
+      return getJudgeList(req.models.judge, cb);
     });
   }
 );
@@ -55,7 +75,10 @@ router.get('/create', function(req, res, next) {
   }
     next();
   }, function(req, res, next) {
-    res.render("create");
+    var cb = function(judges) {
+      res.render("create", {judges: judges, categories: categories});
+    }
+    return getJudgeList(req.models.judge, cb);
   }
 );
 
@@ -139,7 +162,13 @@ router.put('/:id',
       return achievement.update(data).then(function(achievement){
         res.redirect("/achievements/" + achievement.id); 
       }, function (error) {
-        res.render("edit", {achievement: achievement, error: error}); 
+        var cb = function(judges) {
+          res.render('edit', {error: error,
+            achievement: achievement,
+            categories: categories,
+            judges: judges});
+        }
+        return getJudgeList(req.models.judge, cb);
       });
     }).catch( function(error){
       next(error);
@@ -168,7 +197,10 @@ router.get('/:id/edit',
         error.status = 404;
         next(error);
       }
-      res.render('edit', {achievement: achievement});
+      var cb = function(judges) {
+        res.render('edit', {achievement: achievement, categories: categories, judges: judges});
+      }
+      return getJudgeList(req.models.judge, cb);
     }).catch(function(error) {
       next(error);
     });

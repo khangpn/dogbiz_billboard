@@ -25,19 +25,23 @@ form.form-horizontal(action=(!achievement || achievement.isNewRecord) ?
   div.form-group
     label.col-sm-2.control-label(for='Achievement_name') Judge
     div.col-sm-10
-      input.form-control(type='text',
-        name='judge_id',
-        id='Achievement_judge_id',
-        placeholder='Judge ID',
-        value= achievement ? achievement.judge_id : "")
+      select.form-control( name='judge_id', id='Achievement_judge_id')
+        for judge in judges
+          option(value=judge.id,
+            selected=(achievement && achievement.judge_id == judge.id) ?
+              'selected' : undefined
+            )
+            =judge.fullname + ':' + judge.id
   div.form-group
     label.col-sm-2.control-label(for='Achievement_startDate') Category
     div.col-sm-10
-      input.form-control(type='text',
-        name='category',
-        id='Achievement_category',
-        placeholder='Category',
-        value= achievement ? achievement.category : "")
+      select.form-control( name='category', id='Achievement_category')
+        for category in categories
+          option(value=category,
+            selected=(achievement && achievement.category == category) ?
+              'selected' : undefined
+            )
+            =category
   div.form-group
     label.col-sm-2.control-label(for='Achievement_startDate') Rank
     div.col-sm-10
