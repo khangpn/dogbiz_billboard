@@ -12,6 +12,7 @@ block content
               if isAdmin
                 th ID
               th Contest
+              th Judge
               th Dog
               th Category
               th Rank
@@ -23,6 +24,8 @@ block content
                     a(href='/achievements/' + achievement.id)=achievement.id
                 td
                   a(href='/contests/' + achievement.contest.id)=achievement.contest.name
+                td
+                  a(href='/judges/' + achievement.judge.id)=achievement.judge.fullname
                 td
                   a(href='/dogs/' + achievement.dog.id)=achievement.dog.name
                 td

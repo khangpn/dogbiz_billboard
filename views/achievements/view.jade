@@ -16,6 +16,11 @@ block content
           div.col-md-10
             = achievement.contest.startDate
         div.row
+          label.col-md-2 Judge Name:
+          div.col-md-10
+            a(href='/judges/'+achievement.judge.id) 
+              = achievement.judge.fullname
+        div.row
           label.col-md-2 Dog Name:
           div.col-md-10
             a(href='/dogs/'+achievement.dog.id) 

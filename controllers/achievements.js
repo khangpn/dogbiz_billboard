@@ -30,6 +30,7 @@ router.get('/', function(req, res, next) {
   Achievement.findAll({
     include: [ 
       req.models.contest,
+      req.models.judge,
       req.models.dog 
     ]
   })
@@ -118,6 +119,7 @@ router.get('/:id',
     Achievement.findById(req.params.id, {
       include: [
         req.models.contest,
+        req.models.judge,
         req.models.dog
       ]
     }).then(function(achievement) {
