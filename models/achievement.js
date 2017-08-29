@@ -97,6 +97,11 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
+    Achievement.belongsTo(models.judge, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
   };
 
   // Instance methods, from Seq v4
