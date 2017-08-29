@@ -13,9 +13,9 @@ models.sequelize.sync().then(function() {
       fullname: "Khang Nguyen",
       account_id: account.id
     }).then(function(admin) {
-      console.log("Done syncing");
-    }).then(function() {
       return breedImporter(breedCsvFile);
+    }).then(function() {
+      console.log("Done syncing");
     });
   });
 });
