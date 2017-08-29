@@ -46,30 +46,37 @@ router.post('/',
         birthday
       );
       var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
-      return res.render("create", {error: error});
+      var Breed = req.models.breed;
+      return Breed.findAll().then(function(breeds) {
+        res.render("create", {error: error, breeds: breeds});
+      })
     }
     next();
   }, function(req, res, next) {
     var data = req.body;
     var Dog = req.models.dog;
     var Breed = req.models.breed;
-    return Breed.findById(data.breed_id).then(function(breed) {
+    return Breed.findById(data.breed_fci).then(function(breed) {
       if (!breed) {
         var Sequelize = req.models.Sequelize;
         var errorItem = new Sequelize.ValidationErrorItem(
-          "Can't find the breed with id: " + data.breed_id,
+          "Can't find the breed with id: " + data.breed_fci,
           "record not found",
-          "breed_id",
-          data.breed_id
+          "breed_fci",
+          data.breed_fci
         );
         var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
-        return res.render("create", {error: error});
+        return Breed.findAll().then(function(breeds) {
+          res.render("create", {error: error, breeds: breeds});
+        })
       }
       return Dog.create(data).then(function(dog){
         res.redirect("/dogs/" + dog.id); 
       })
     }).catch ( function(error){
-      res.render("create", {error: error});
+      return Breed.findAll().then(function(breeds) {
+        res.render("create", {error: error, breeds: breeds});
+      })
     });
   }
 );
@@ -82,7 +89,10 @@ router.get('/create', function(req, res, next) {
   }
     next();
   }, function(req, res, next) {
-    res.render("create");
+    var Breed = req.models.breed;
+    return Breed.findAll().then(function(breeds) {
+      res.render("create", {breeds: breeds});
+    })
   }
 );
 
@@ -177,14 +187,14 @@ router.put('/:id',
           error.status = 404;
           next(error);
         }
-        return Breed.findById(data.breed_id).then(function(breed) {
+        return Breed.findById(data.breed_fci).then(function(breed) {
           if (!breed) {
             var Sequelize = req.models.Sequelize;
             var errorItem = new Sequelize.ValidationErrorItem(
-              "Can't find the breed with id: " + data.breed_id,
+              "Can't find the breed with id: " + data.breed_fci,
               "record not found",
-              "breed_id",
-              data.breed_id
+              "breed_fci",
+              data.breed_fci
             );
             var error = new Sequelize.ValidationError("The input is invalid", [errorItem]);
             throw error;
@@ -193,10 +203,12 @@ router.put('/:id',
             res.redirect('/dogs/' + dog.id); 
           });
         }).catch ( function(error){
-          res.render("edit", {dog:dog, error: error});
+          return Breed.findAll().then(function(breeds) {
+            res.render("edit", {breeds: breeds, dog:dog, error: error});
+          })
         });
     }).catch ( function(error){
-      res.render("edit", {error: error});
+      next(error);
     });
 
   }
@@ -221,7 +233,9 @@ router.get('/:id/edit',
         error.status = 404;
         next(error);
       }
-      res.render('edit', {dog: dog});
+      return Breed.findAll().then(function(breeds) {
+        res.render("edit", {breeds: breeds, dog: dog});
+      })
     }).catch(function(error) {
       next(error);
     });

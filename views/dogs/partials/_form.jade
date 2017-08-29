@@ -85,13 +85,15 @@ form.form-horizontal(action=(!dog || dog.isNewRecord) ?
         placeholder='Photo URL',
         value= dog ? dog.photo : "")
   div.form-group
-    label.col-sm-2.control-label(for='Dog_breed') Breed 
+    label.col-sm-2.control-label(for='Dog_breed_fci') Breed
     div.col-sm-10
-      input.form-control(type='breed',
-        name='breed_id',
-        id='Dog_breed',
-        placeholder='Breed ID',
-        value= dog ? dog.breed.id : "")
+      select.form-control( name='breed_fci', id='Dog_breed_fci')
+        for breed in breeds
+          option(value=breed.fci,
+            selected=(dog && dog.breed_fci == breed.fci) ?
+              'selected' : undefined
+            )
+            =breed.name + ':' + breed.fci
   div.form-group
     label.col-sm-2.control-label(for='Dog_note') Note
     div.col-sm-10
