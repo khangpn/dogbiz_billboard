@@ -77,7 +77,11 @@ module.exports = function(sequelize, DataTypes) {
   // Class methods, new from Seq v4
   Contest.associate = function(models) {
     Contest.hasMany(models.achievement, {
-      onDelete: "CASCADE",
+      foreignKey: {
+        allowNull: false
+      }
+    });
+    Contest.hasMany(models.entry, {
       foreignKey: {
         allowNull: false
       }

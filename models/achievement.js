@@ -125,22 +125,18 @@ module.exports = function(sequelize, DataTypes) {
       }
     });
     Achievement.belongsTo(models.contest, {
+      onDelete: "CASCADE",
       foreignKey: {
         allowNull: false
       }
     });
     Achievement.belongsTo(models.judge, {
-      foreignKey: {
-        allowNull: false
-      }
+      onDelete: "SET NULL"
+    });
+    Achievement.belongsTo(models.entry, {
+      onDelete: "SET NULL"
     });
   };
-
-  // Instance methods, from Seq v4
-  // TODO: update the algorithm to calculate score
-  //Achievement.prototype.calculateScore = function() {
-  //  this.setDataValue("score",  10);
-  //};
 
   return Achievement;
 };
