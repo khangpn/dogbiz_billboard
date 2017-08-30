@@ -47,6 +47,8 @@ models.sequelize.sync().then(function() {
       }).then(function(contest) {
         return models.achievement.create({
           rank: 1,
+          dogClass: "Baby",
+          round: "Breed",
           category: "Small Dog",
           dog_id: dog.id,
           contest_id: contest.id,

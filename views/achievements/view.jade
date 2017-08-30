@@ -26,6 +26,14 @@ block content
             a(href='/dogs/'+achievement.dog.id) 
               = achievement.dog.name
         div.row
+          label.col-md-2 Class:
+          div.col-md-10
+            = achievement.dogClass
+        div.row
+          label.col-md-2 Round:
+          div.col-md-10
+            = achievement.category
+        div.row
           label.col-md-2 Category:
           div.col-md-10
             = achievement.category

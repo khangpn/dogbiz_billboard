@@ -12,9 +12,38 @@ module.exports = function(sequelize, DataTypes) {
           }
         }
       },
+      dogClass: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "n/a",
+        validate: {
+          notEmpty: {
+            msg: "Achievement's dog class is required"
+          },
+          len: {
+            args: [1, 128],
+            msg: "Achievement's dog class should be from 1 to 128 characters length"
+          }
+        }
+      },
+      round: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "n/a",
+        validate: {
+          notEmpty: {
+            msg: "Achievement winning round is required"
+          },
+          len: {
+            args: [1, 128],
+            msg: "Achievement winning round should be from 1 to 128 characters length"
+          }
+        }
+      },
       category: { 
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: "n/a",
         validate: {
           notEmpty: {
             msg: "Achievement category is required"

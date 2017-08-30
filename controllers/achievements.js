@@ -2,6 +2,20 @@ var express = require('express');
 var router = express.Router();
 var partials = express.Router();
 
+var dogClasses = [
+"Baby",
+"Puppy",
+"Intermediate",
+"Junior",
+"Open",
+"Champion",
+"Veteran"
+];
+var rounds = [
+"Breed",
+"Group",
+"Show"
+];
 var categories = [
 "Winner Dog",
 "Winner Bitch",
@@ -14,6 +28,13 @@ var categories = [
 "Best in Show",
 "Reserve Best in Show"
 ];
+
+var setConstants = function(req, res, next) {
+  res.locals.categories = categories;
+  res.locals.rounds = rounds;
+  res.locals.dogClasses = dogClasses;
+  next();
+}
 
 var getJudgeList = function(Judge, cb) {
   return Judge.findAll().then(cb);
@@ -54,30 +75,33 @@ router.post('/',
       next(error);
     }
     next();
-  }, function(req, res, next) {
+  }, setConstants,
+  function(req, res, next) {
     var data = req.body;
     var Achievement = req.models.achievement;
     return Achievement.create(data).then(function(achievement){
       res.redirect("/achievements/" + achievement.id); 
     }).catch ( function(error){
       var cb = function(judges) {
-        res.render("create", {error: error, judges: judges, categories: categories});
+        res.render("create", {error: error, judges: judges});
       }
       return getJudgeList(req.models.judge, cb);
     });
   }
 );
 
-router.get('/create', function(req, res, next) {
-  if (!res.locals.isAdmin) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
-  }
+router.get('/create', 
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
     next();
-  }, function(req, res, next) {
+  }, setConstants,
+  function(req, res, next) {
     var cb = function(judges) {
-      res.render("create", {judges: judges, categories: categories});
+      res.render("create", {judges: judges});
     }
     return getJudgeList(req.models.judge, cb);
   }
@@ -152,7 +176,8 @@ router.put('/:id',
       req.body['year'] = startDate.getFullYear();
     }
     next();
-  }, function(req, res, next) {
+  }, setConstants,
+  function(req, res, next) {
     var data = req.body;
     var Achievement = req.models.achievement;
     Achievement.findById(data.id).then(function(achievement) {
@@ -167,7 +192,6 @@ router.put('/:id',
         var cb = function(judges) {
           res.render('edit', {error: error,
             achievement: achievement,
-            categories: categories,
             judges: judges});
         }
         return getJudgeList(req.models.judge, cb);
@@ -186,7 +210,8 @@ router.get('/:id/edit',
       next(error);
     }
     next();
-  }, function (req, res, next) {
+  }, setConstants,
+  function (req, res, next) {
     var Achievement = req.models.achievement;
     Achievement.findById(req.params.id, {
       include: [
@@ -200,7 +225,7 @@ router.get('/:id/edit',
         next(error);
       }
       var cb = function(judges) {
-        res.render('edit', {achievement: achievement, categories: categories, judges: judges});
+        res.render('edit', {achievement: achievement, judges: judges});
       }
       return getJudgeList(req.models.judge, cb);
     }).catch(function(error) {

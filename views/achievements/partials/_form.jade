@@ -23,7 +23,7 @@ form.form-horizontal(action=(!achievement || achievement.isNewRecord) ?
         placeholder='Dog ID',
         value= achievement ? achievement.dog_id : "")
   div.form-group
-    label.col-sm-2.control-label(for='Achievement_name') Judge
+    label.col-sm-2.control-label(for='Achievement_judge_id') Judge
     div.col-sm-10
       select.form-control( name='judge_id', id='Achievement_judge_id')
         for judge in judges
@@ -32,6 +32,26 @@ form.form-horizontal(action=(!achievement || achievement.isNewRecord) ?
               'selected' : undefined
             )
             =judge.fullname + ':' + judge.id
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_dogClass') Dog Class
+    div.col-sm-10
+      select.form-control( name='dogClass', id='Achievement_dogClass')
+        for dogClass in dogClasses
+          option(value=dogClass,
+            selected=(achievement && achievement.dogClass == dogClass) ?
+              'selected' : undefined
+            )
+            =dogClass
+  div.form-group
+    label.col-sm-2.control-label(for='Achievement_round') Round
+    div.col-sm-10
+      select.form-control( name='round', id='Achievement_round')
+        for round in rounds
+          option(value=round,
+            selected=(achievement && achievement.round == round) ?
+              'selected' : undefined
+            )
+            =round
   div.form-group
     label.col-sm-2.control-label(for='Achievement_startDate') Category
     div.col-sm-10
