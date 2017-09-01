@@ -5,7 +5,15 @@ var partials = express.Router();
 
 //--------------- Unauthenticated section ------------------
 router.get('/', function(req, res, next) {
-  res.render("../index", {title: 'DogBiz Billboard'});
+  Dog = req.models.dog;
+  Breed = req.models.breed;
+  Dog.findAll({
+    include: [Breed]
+  }).then(function(dogs) {
+    res.render("../index", {title: 'DogBiz Billboard', dogs: dogs});
+  }).catch(function(error) {
+    next(error);
+  });
 });
 
 router.get('/login', function(req, res, next) {
