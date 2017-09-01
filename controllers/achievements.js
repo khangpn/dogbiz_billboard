@@ -3,30 +3,30 @@ var router = express.Router();
 var partials = express.Router();
 
 var dogClasses = [
-"Baby",
-"Puppy",
-"Intermediate",
-"Junior",
-"Open",
-"Champion",
-"Veteran"
+  "Baby",
+  "Puppy",
+  "Intermediate",
+  "Junior",
+  "Open",
+  "Champion",
+  "Veteran"
 ];
 var rounds = [
-"Breed",
-"Group",
-"Show"
+  "Breed",
+  "Group",
+  "Show"
 ];
 var categories = [
-"Winner Dog",
-"Winner Bitch",
-"Best of Winner",
-"Class Winner",
-"Best of Opposite Sex (Reserve Best Of Breed)",
-"Best of Breed",
-"Best In Group",
-"Reserve Best In Group",
-"Best in Show",
-"Reserve Best in Show"
+  "Winner Dog",
+  "Winner Bitch",
+  "Best of Winner",
+  "Class Winner",
+  "Best of Opposite Sex (Reserve Best Of Breed)",
+  "Best of Breed",
+  "Best In Group",
+  "Reserve Best In Group",
+  "Best in Show",
+  "Reserve Best in Show"
 ];
 
 var setConstants = function(req, res, next) {
@@ -65,12 +65,12 @@ router.get('/', function(req, res, next) {
 router.post('/',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -79,8 +79,29 @@ router.post('/',
   function(req, res, next) {
     var data = req.body;
     var Achievement = req.models.achievement;
-    return Achievement.create(data).then(function(achievement){
-      res.redirect("/achievements/" + achievement.id); 
+    var Entry = req.models.entry;
+    return Entry.findOne({
+      where: {
+        contest_id: data.contest_id,
+        dog_id: data.dog_id,
+      }
+    }) .then(function(entry){
+      if (!entry) {
+        var error = new Error("Can't find the entry with contest_id: " + data.contest_id +
+          " and dog_id: " + data.dog_id);
+        error.status = 404;
+        next(error);
+      }
+      data.entry_id = entry.id;
+      
+      return Achievement.create(data).then(function(achievement){
+        res.redirect("/achievements/" + achievement.id); 
+      }).catch ( function(error){
+        var cb = function(judges) {
+          res.render("create", {error: error, judges: judges});
+        }
+        return getJudgeList(req.models.judge, cb);
+      });
     }).catch ( function(error){
       var cb = function(judges) {
         res.render("create", {error: error, judges: judges});
@@ -93,9 +114,9 @@ router.post('/',
 router.get('/create', 
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+      var error = new Error('You are not permitted to access this!');
+      error.status = 401;
+      return next(error);
     }
     next();
   }, setConstants,
@@ -110,7 +131,7 @@ router.get('/create',
 router.delete('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -125,7 +146,7 @@ router.delete('/:id',
         next(error);
       });
     }).catch( function(error){
-      var err = new Error("Can't find the achievement with id: " + data.id);
+      var error = new Error("Can't find the achievement with id: " + data.id);
       error.status = 404;
       next(error);
     });
@@ -148,7 +169,7 @@ router.get('/:id',
       ]
     }).then(function(achievement) {
       if (!achievement) {
-        var err = new Error("Can't find the achievement with id: " + req.params.id);
+        var error = new Error("Can't find the achievement with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
@@ -161,12 +182,12 @@ router.get('/:id',
 router.put('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -182,7 +203,7 @@ router.put('/:id',
     var Achievement = req.models.achievement;
     Achievement.findById(data.id).then(function(achievement) {
       if (!achievement) {
-        var err = new Error("Can't find the achievement with id: " + data.id);
+        var error = new Error("Can't find the achievement with id: " + data.id);
         error.status = 404;
         next(error);
       }
@@ -205,7 +226,7 @@ router.put('/:id',
 router.get('/:id/edit', 
   function (req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -220,7 +241,7 @@ router.get('/:id/edit',
       ]
     }).then(function(achievement) {
       if (!achievement) {
-        var err = new Error("Can't find the achievement with id: " + req.params.id);
+        var error = new Error("Can't find the achievement with id: " + req.params.id);
         error.status = 404;
         next(error);
       }

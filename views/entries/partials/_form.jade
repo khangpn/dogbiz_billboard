@@ -1,0 +1,32 @@
+form.form-horizontal(action=(!entry || entry.isNewRecord) ? 
+'/entries' : '/entries/'+entry.id, method="post")
+  if entry
+    input(type="hidden", name="_method", value="put")
+    input(type='hidden', name='id', id='Entry_id', value= entry ? entry.id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Entry_dog_id') Dog ID
+    div.col-sm-10
+      input.form-control(type='text',
+        name='dog_id',
+        id='Entry_dog_id',
+        placeholder='Dog ID',
+        value= entry ? entry.dog_id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Entry_contest_id') Contest ID
+    div.col-sm-10
+      input.form-control(type='text',
+        name='contest_id',
+        id='Entry_contest_id',
+        placeholder='Contest ID',
+        value= entry ? entry.contest_id : "")
+  div.form-group
+    label.col-sm-2.control-label(for='Entry_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Entry_note',
+        placeholder='Note',
+      )=entry ? entry.note : ""
+  div.form-group
+    div.col-sm-offset-2.col-sm-3
+      input.btn.btn-default(type='submit' value='Submit')
