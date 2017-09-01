@@ -140,7 +140,11 @@ router.get('/:id',
       return dog.getAchievements({
         include: [req.models.contest]
       }).then(achievements => {
-        res.render('view', {dog: dog, achievements: achievements});
+        return dog.getEntries({
+          include: [req.models.contest]
+        }).then(entries => {
+          res.render('view', {dog: dog, entries: entries, achievements: achievements});
+        });
       });
     }).catch(function(error) {
       next(error);
