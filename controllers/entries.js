@@ -26,12 +26,12 @@ router.get('/', function(req, res, next) {
 router.post('/',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -49,9 +49,9 @@ router.post('/',
 
 router.get('/create', function(req, res, next) {
   if (!res.locals.isAdmin) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
+    var error = new Error('You are not permitted to access this!');
+    error.status = 401;
+    return next(error);
   }
     next();
   }, function(req, res, next) {
@@ -62,7 +62,7 @@ router.get('/create', function(req, res, next) {
 router.delete('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -75,7 +75,7 @@ router.delete('/:id',
         id: req.params.id 
       }}).then(function(affectedRow){
         if (affectedRow == 1) return res.redirect("/entries");
-        var err = new Error("Can't find the entry with id: " + data.id);
+        var error = new Error("Can't find the entry with id: " + data.id);
         error.status = 404;
         next(error);
       }).catch( function(error){
@@ -98,7 +98,7 @@ router.get('/:id',
       include: [Dog, Contest]
     }).then(function(entry) {
       if (!entry) {
-        var err = new Error("Can't find the entry with id: " + req.params.id);
+        var error = new Error("Can't find the entry with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
@@ -113,12 +113,12 @@ router.get('/:id',
 router.put('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -128,7 +128,7 @@ router.put('/:id',
     var Entry = req.models.entry;
     Entry.findById(req.params.id).then(function(entry) {
       if (!entry) {
-        var err = new Error("Can't find the entry with id: " + data.id);
+        var error = new Error("Can't find the entry with id: " + data.id);
         error.status = 404;
         next(error);
       }
@@ -147,7 +147,7 @@ router.put('/:id',
 router.get('/:id/edit', 
   function (req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -156,7 +156,7 @@ router.get('/:id/edit',
     var Entry = req.models.entry;
     Entry.findById(req.params.id).then(function(entry) {
       if (!entry) {
-        var err = new Error("Can't find the entry with id: " + req.params.id);
+        var error = new Error("Can't find the entry with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
