@@ -9,6 +9,7 @@ div.panel.panel-default
             if isAdmin
               th ID
             th Contest
+            th Date
         tbody
           for entry in entries
             tr
@@ -17,3 +18,5 @@ div.panel.panel-default
                   a(href='/entries/' + entry.id)=entry.id
               td
                 a(href='/contests/' + entry.contest.id)=entry.contest.name
+              td
+                =entry.created_at

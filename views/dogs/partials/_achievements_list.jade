@@ -11,6 +11,9 @@ div.panel.panel-default
             th Contest
             th Category
             th Rank
+            th Dog Class
+            th Round
+            th Score
         tbody
           for achievement in achievements
             tr
@@ -23,3 +26,9 @@ div.panel.panel-default
                 =achievement.category
               td
                 =achievement.rank
+              td
+                =achievement.dogClass
+              td
+                =achievement.round
+              td
+                =achievement.score

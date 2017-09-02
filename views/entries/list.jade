@@ -13,6 +13,7 @@ block content
                 th ID
               th Dog
               th Contest
+              th Date
           tbody
             for entry in entries
               tr
@@ -23,3 +24,5 @@ block content
                   a(href='/entries/' + entry.id)=entry.dog.name
                 td
                   a(href='/contests/' + entry.contest.id)=entry.contest.name
+                td
+                  =entry.created_at
