@@ -77,37 +77,70 @@ router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
     next();
   }, function(req, res, next) {
   const Dog = req.models.dog;
-  let limit = req.params.topLimit;
+  const Breed = req.models.breed;
   let fci = req.params.fci;
-  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
-  Dog.findAll({
-    include: [
-      {
-        model: req.models.breed,
-        where: {
-          fci: fci
-        }
-      }
-    ],
-    order: [['score', 'DESC']],
-    limit: limit
-  })
-    .then(function(dogs){
-      res.render("list", {dogs: dogs});
+  Breed.findById(fci).then(function(breed) {
+    if (!breed) {
+      var error = new Error("Can't find the breed with id: " + fci);
+      error.status = 404;
+      next(error);
+    }
+    let limit = req.params.topLimit;
+    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+    breed.getDogs({
+      include: [ req.models.breed ],
+      order: [['score', 'DESC']],
+      limit: limit
+    }).then(function(dogs){
+      res.render("top_breed", {breed: breed, dogs: dogs});
     }).catch( function(error){
       next(error);
     });
+  }).catch( function(error){
+    next(error);
+  });
+});
+
+router.get('/contest/:contestId/top/:topLimit', function(req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function(req, res, next) {
+  const Dog = req.models.dog;
+  const Contest = req.models.contest;
+  let contestId = req.params.contestId;
+  Contest.findById(contestId).then(function(contest) {
+    if (!contest) {
+      var error = new Error("Can't find the contest with id: " + contestId);
+      error.status = 404;
+      next(error);
+    }
+    let limit = req.params.topLimit;
+    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+    contest.getDogs({
+      include: [ req.models.breed ],
+      order: [['score', 'DESC']],
+      limit: limit
+    }).then(function(dogs){
+      res.render("top_contest", {contest: contest, dogs: dogs});
+    }).catch( function(error){
+      next(error);
+    });
+  }).catch( function(error){
+    next(error);
+  });
 });
 
 router.post('/',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -161,7 +194,7 @@ router.post('/',
 
 router.get('/create', function(req, res, next) {
   if (!res.locals.isAdmin) {
-    var err = new Error('You are not permitted to access this!');
+    var error = new Error('You are not permitted to access this!');
     err.status = 401;
     return next(err);
   }
@@ -177,7 +210,7 @@ router.get('/create', function(req, res, next) {
 router.delete('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -190,7 +223,7 @@ router.delete('/:id',
         id: req.params.id 
       }}).then(function(affectedRow){
         if (affectedRow == 1) return res.redirect("/dogs");
-        var err = new Error("Can't find the dog with id: " + data.id);
+        var error = new Error("Can't find the dog with id: " + data.id);
         error.status = 404;
         next(error);
       }).catch( function(error){
@@ -211,7 +244,7 @@ router.get('/:id',
       include: [req.models.breed]
     }).then(function(dog) {
       if (!dog) {
-        var err = new Error("Can't find the dog with id: " + req.params.id);
+        var error = new Error("Can't find the dog with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
@@ -232,12 +265,12 @@ router.get('/:id',
 router.put('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
     if (!req.body) {
-      var err = new Error('Cannot get the req.body');
+      var error = new Error('Cannot get the req.body');
       error.status = 400;
       next(error);
     }
@@ -265,7 +298,7 @@ router.put('/:id',
       include: [Breed]
     }).then(function(dog) {
         if (!dog) {
-          var err = new Error("Can't find the dog with id: " + data.id);
+          var error = new Error("Can't find the dog with id: " + data.id);
           error.status = 404;
           next(error);
         }
@@ -299,7 +332,7 @@ router.put('/:id',
 router.get('/:id/edit', 
   function (req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
+      var error = new Error('You are not permitted to access this!');
       error.status = 401;
       next(error);
     }
@@ -311,7 +344,7 @@ router.get('/:id/edit',
       include: [Breed]
     }).then(function(dog) {
       if (!dog) {
-        var err = new Error("Can't find the dog with id: " + req.params.id);
+        var error = new Error("Can't find the dog with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
