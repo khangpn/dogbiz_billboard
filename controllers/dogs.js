@@ -70,6 +70,35 @@ router.get('/top/:topLimit', function(req, res, next) {
     });
 });
 
+router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function(req, res, next) {
+  const Dog = req.models.dog;
+  let limit = req.params.topLimit;
+  let fci = req.params.fci;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+  Dog.findAll({
+    include: [
+      {
+        model: req.models.breed,
+        where: {
+          fci: fci
+        }
+      }
+    ],
+    order: [['score', 'DESC']],
+    limit: limit
+  })
+    .then(function(dogs){
+      res.render("list", {dogs: dogs});
+    }).catch( function(error){
+      next(error);
+    });
+});
+
 router.post('/',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
