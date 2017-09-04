@@ -1,0 +1,30 @@
+div.container
+  form.form-horizontal(action='/dogs', method="get")
+    if dog
+      input(type="hidden", name="_method", value="put")
+    div.form-group
+      label.col-sm-1.control-label(for='Dog_breed_fci') Breed
+      div.col-sm-2
+        select.form-control( name='breed_fci', id='Dog_breed_fci')
+          option(value='')
+            | --select--
+          for bre in breeds
+            option(value=bre.fci,
+              selected=(breed && breed.fci == bre.fci) ?
+                'selected' : undefined
+              )
+              =bre.name
+      label.col-sm-1.control-label(for='Dog_contest_id') Contest
+      div.col-sm-2
+        select.form-control( name='contest_id', id='Dog_contest_id')
+          option(value='')
+            | --select--
+          for con in contests
+            option(value=con.id,
+              selected=(contest && contest.id == con.fci) ?
+                'selected' : undefined
+              )
+              =con.name
+      div.col-sm-1
+        input.btn.btn-default(type='submit' value='Submit')
+

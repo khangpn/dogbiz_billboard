@@ -8,6 +8,12 @@ const SELECT_LIMIT = 50;
 router.get('/', function(req, res, next) {
 
     // request validation here
+    console.log(req.query);
+    if (req.query.breed_fci)
+      return res.redirect("/dogs/breed/" + req.query.breed_fci + "/top/" + SELECT_LIMIT.toString());
+
+    if (req.query.contest_id)
+      return res.redirect("/dogs/contest/" + req.query.contest_id + "/top/" + SELECT_LIMIT.toString());
 
     next();
   }, function(req, res, next) {
@@ -19,12 +25,17 @@ router.get('/', function(req, res, next) {
       ['score', 'DESC']
     ],
     limit: SELECT_LIMIT
-  })
-    .then(function(dogs){
-      res.render("list", {dogs: dogs});
-    }).catch( function(error){
-      next(error);
+  }).then(function(dogs){
+    var Breed = req.models.breed;
+    return Breed.findAll().then(function(breeds) {
+      var Contest = req.models.contest;
+      return Contest.findAll().then(function(contests) {
+        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
+      });
     });
+  }).catch( function(error){
+    next(error);
+  });
 });
 
 router.get('/page/:pageNumber', function(req, res, next) {
@@ -41,12 +52,17 @@ router.get('/page/:pageNumber', function(req, res, next) {
     order: [['score', 'DESC']],
     limit: SELECT_LIMIT,
     offset: pageNumber*SELECT_LIMIT
-  })
-    .then(function(dogs){
-      res.render("list", {dogs: dogs});
-    }).catch( function(error){
-      next(error);
+  }).then(function(dogs){
+    var Breed = req.models.breed;
+    return Breed.findAll().then(function(breeds) {
+      var Contest = req.models.contest;
+      return Contest.findAll().then(function(contests) {
+        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
+      });
     });
+  }).catch( function(error){
+    next(error);
+  });
 });
 
 router.get('/top/:topLimit', function(req, res, next) {
@@ -62,12 +78,17 @@ router.get('/top/:topLimit', function(req, res, next) {
     include: [req.models.breed],
     order: [['score', 'DESC']],
     limit: limit
-  })
-    .then(function(dogs){
-      res.render("list", {dogs: dogs});
-    }).catch( function(error){
-      next(error);
+  }).then(function(dogs){
+    var Breed = req.models.breed;
+    return Breed.findAll().then(function(breeds) {
+      var Contest = req.models.contest;
+      return Contest.findAll().then(function(contests) {
+        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
+      });
     });
+  }).catch( function(error){
+    next(error);
+  });
 });
 
 router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
@@ -92,7 +113,13 @@ router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
       order: [['score', 'DESC']],
       limit: limit
     }).then(function(dogs){
-      res.render("top_breed", {breed: breed, dogs: dogs});
+      var Breed = req.models.breed;
+      return Breed.findAll().then(function(breeds) {
+        var Contest = req.models.contest;
+        return Contest.findAll().then(function(contests) {
+          res.render("top_breed", {breed: breed, dogs: dogs, breeds: breeds, contests: contests});
+        });
+      });
     }).catch( function(error){
       next(error);
     });
@@ -123,7 +150,13 @@ router.get('/contest/:contestId/top/:topLimit', function(req, res, next) {
       order: [['score', 'DESC']],
       limit: limit
     }).then(function(dogs){
-      res.render("top_contest", {contest: contest, dogs: dogs});
+      var Breed = req.models.breed;
+      return Breed.findAll().then(function(breeds) {
+        var Contest = req.models.contest;
+        return Contest.findAll().then(function(contests) {
+          res.render("top_contest", {contest: contest, dogs: dogs, breeds: breeds, contests: contests});
+        });
+      });
     }).catch( function(error){
       next(error);
     });
