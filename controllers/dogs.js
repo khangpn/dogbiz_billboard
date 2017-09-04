@@ -3,6 +3,7 @@ var router = express.Router();
 var partials = express.Router();
 var DateHelper = require("../lib/date-helper.js");
 
+const SELECT_LIMIT = 50;
 //----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
 
@@ -10,9 +11,57 @@ router.get('/', function(req, res, next) {
 
     next();
   }, function(req, res, next) {
-  var Dog = req.models.dog;
+  const Dog = req.models.dog;
+  let sequelize = req.models.sequelize;
   Dog.findAll({
-    include: [req.models.breed]
+    include: [req.models.breed],
+    order: [
+      ['score', 'DESC']
+    ],
+    limit: SELECT_LIMIT
+  })
+    .then(function(dogs){
+      res.render("list", {dogs: dogs});
+    }).catch( function(error){
+      next(error);
+    });
+});
+
+router.get('/page/:pageNumber', function(req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function(req, res, next) {
+  var Dog = req.models.dog;
+  let pageNumber = req.params.pageNumber;
+  pageNumber = (!isNaN(pageNumber) && parseInt(pageNumber) > 0) ? (parseInt(pageNumber) - 1) : 0;
+  Dog.findAll({
+    include: [req.models.breed],
+    order: [['score', 'DESC']],
+    limit: SELECT_LIMIT,
+    offset: pageNumber*SELECT_LIMIT
+  })
+    .then(function(dogs){
+      res.render("list", {dogs: dogs});
+    }).catch( function(error){
+      next(error);
+    });
+});
+
+router.get('/top/:topLimit', function(req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function(req, res, next) {
+  const Dog = req.models.dog;
+  let limit = req.params.topLimit;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+  Dog.findAll({
+    include: [req.models.breed],
+    order: [['score', 'DESC']],
+    limit: limit
   })
     .then(function(dogs){
       res.render("list", {dogs: dogs});
