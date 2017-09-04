@@ -20,7 +20,7 @@ block content
               div.row
                 label.col-md-2 Breed:
                 div.col-md-10
-                  = dog.breed ? dog.breed.name : "N/A"
+                  a(href='/breeds/' + dog.breed.fci)=dog.breed.name
               div.row
                 label.col-md-2 Birthday:
                 div.col-md-10
