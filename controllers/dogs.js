@@ -9,11 +9,15 @@ router.get('/', function(req, res, next) {
 
     // request validation here
     console.log(req.query);
-    if (req.query.breed_fci)
-      return res.redirect("/dogs/breed/" + req.query.breed_fci + "?limit=" + SELECT_LIMIT.toString());
-
-    if (req.query.contest_id)
-      return res.redirect("/dogs/contest/" + req.query.contest_id + "?limit=" + SELECT_LIMIT.toString());
+    if (req.query.breed_fci) {
+      let page = req.params.page;
+      page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+      let limit = req.params.limit;
+      limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+      return res.redirect("/dogs/breed/" + req.query.breed_fci + "?"
+        + "limit=" + limit.toString()
+        + "&page=" + page.toString());
+    }
 
     next();
   }, function(req, res, next) {
@@ -99,46 +103,6 @@ router.get('/breed/:fci', function(req, res, next) {
         var Contest = req.models.contest;
         return Contest.findAll().then(function(contests) {
           res.render("top_breed", {breed: breed, dogs: dogs, breeds: breeds, contests: contests});
-        });
-      });
-    }).catch( function(error){
-      next(error);
-    });
-  }).catch( function(error){
-    next(error);
-  });
-});
-
-router.get('/contest/:contestId', function(req, res, next) {
-
-    // request validation here
-
-    next();
-  }, function(req, res, next) {
-  const Dog = req.models.dog;
-  const Contest = req.models.contest;
-  let contestId = req.params.contestId;
-  Contest.findById(contestId).then(function(contest) {
-    if (!contest) {
-      var error = new Error("Can't find the contest with id: " + contestId);
-      error.status = 404;
-      next(error);
-    }
-    let limit = req.params.limit;
-    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
-    let page = req.params.page;
-    page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
-    contest.getDogs({
-      include: [ req.models.breed ],
-      order: [['score', 'DESC']],
-      limit: limit,
-      offset: page*limit
-    }).then(function(dogs){
-      var Breed = req.models.breed;
-      return Breed.findAll().then(function(breeds) {
-        var Contest = req.models.contest;
-        return Contest.findAll().then(function(contests) {
-          res.render("top_contest", {contest: contest, dogs: dogs, breeds: breeds, contests: contests});
         });
       });
     }).catch( function(error){
