@@ -2,13 +2,11 @@ var express = require('express');
 var router = express.Router();
 var partials = express.Router();
 var DateHelper = require("../lib/date-helper.js");
+const {select_limit: SELECT_LIMIT } = require('../parameters');
 
-const SELECT_LIMIT = 100;
-//----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
 
     // request validation here
-    console.log(req.query);
     if (req.query.breed_fci) {
       let page = req.params.page;
       page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
@@ -327,7 +325,6 @@ router.get('/:id/edit',
       next(error);
     });
 });
-//--------------------------------------------------------
 
 //----------------- Partials section --------------------
 partials.get('/:name', function (req, res) {

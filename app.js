@@ -10,10 +10,13 @@ var model = require('./lib/setup-model');
 var token_validation = require('./lib/validate-token');
 var alter_req_body = require('./lib/alter-req-body');
 var xhr_error_handler = require('./lib/xhr-error-handler');
+const params = require('./parameters');
 
 console.log("Welcome to Dogbiz BillBoard!");
 console.log("You are running on %s mode!", process.env.NODE_ENV);
+
 var app = express();
+app.locals = params.app.locals;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

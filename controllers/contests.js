@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var partials = express.Router();
 var DateHelper = require("../lib/date-helper.js");
+const {select_limit: SELECT_LIMIT } = require('../parameters');
 
-//----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
 
     // request validation here
@@ -191,7 +191,6 @@ router.get('/:id/edit',
       next(error);
     });
 });
-//--------------------------------------------------------
 
 //----------------- Partials section --------------------
 partials.get('/:name', function (req, res) {
