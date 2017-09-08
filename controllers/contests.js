@@ -11,8 +11,13 @@ router.get('/', function(req, res, next) {
     next();
   }, function(req, res, next) {
   var Contest = req.models.contest;
+  let page = req.params.page;
+  page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+  let limit = req.params.limit;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
   Contest.findAll({
-    include: [req.models.achievement]
+    limit: limit,
+    offset: page*limit
   })
     .then(function(contests){
       res.render("list", {contests: contests});
