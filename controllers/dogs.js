@@ -3,28 +3,33 @@ var router = express.Router();
 var partials = express.Router();
 var DateHelper = require("../lib/date-helper.js");
 
-const SELECT_LIMIT = 50;
+const SELECT_LIMIT = 100;
 //----------------- Angular App--------------------
 router.get('/', function(req, res, next) {
 
     // request validation here
     console.log(req.query);
     if (req.query.breed_fci)
-      return res.redirect("/dogs/breed/" + req.query.breed_fci + "/top/" + SELECT_LIMIT.toString());
+      return res.redirect("/dogs/breed/" + req.query.breed_fci + "?limit=" + SELECT_LIMIT.toString());
 
     if (req.query.contest_id)
-      return res.redirect("/dogs/contest/" + req.query.contest_id + "/top/" + SELECT_LIMIT.toString());
+      return res.redirect("/dogs/contest/" + req.query.contest_id + "?limit=" + SELECT_LIMIT.toString());
 
     next();
   }, function(req, res, next) {
   const Dog = req.models.dog;
   let sequelize = req.models.sequelize;
+  let page = req.params.page;
+  page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+  let limit = req.params.limit;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
   Dog.findAll({
     include: [req.models.breed],
     order: [
       ['score', 'DESC']
     ],
-    limit: SELECT_LIMIT
+    limit: limit,
+    offset: page*limit
   }).then(function(dogs){
     var Breed = req.models.breed;
     return Breed.findAll().then(function(breeds) {
@@ -38,42 +43,15 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/page/:pageNumber', function(req, res, next) {
-
-    // request validation here
-
-    next();
-  }, function(req, res, next) {
-  var Dog = req.models.dog;
-  let pageNumber = req.params.pageNumber;
-  pageNumber = (!isNaN(pageNumber) && parseInt(pageNumber) > 0) ? (parseInt(pageNumber) - 1) : 0;
-  Dog.findAll({
-    include: [req.models.breed],
-    order: [['score', 'DESC']],
-    limit: SELECT_LIMIT,
-    offset: pageNumber*SELECT_LIMIT
-  }).then(function(dogs){
-    var Breed = req.models.breed;
-    return Breed.findAll().then(function(breeds) {
-      var Contest = req.models.contest;
-      return Contest.findAll().then(function(contests) {
-        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
-      });
-    });
-  }).catch( function(error){
-    next(error);
-  });
-});
-
-router.get('/top/:topLimit', function(req, res, next) {
+router.get('/top/:limit', function(req, res, next) {
 
     // request validation here
 
     next();
   }, function(req, res, next) {
   const Dog = req.models.dog;
-  let limit = req.params.topLimit;
-  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+  let limit = req.params.limit;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
   Dog.findAll({
     include: [req.models.breed],
     order: [['score', 'DESC']],
@@ -91,7 +69,7 @@ router.get('/top/:topLimit', function(req, res, next) {
   });
 });
 
-router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
+router.get('/breed/:fci', function(req, res, next) {
 
     // request validation here
 
@@ -106,12 +84,15 @@ router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
       error.status = 404;
       next(error);
     }
-    let limit = req.params.topLimit;
-    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+    let limit = req.params.limit;
+    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+    let page = req.params.page;
+    page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
     breed.getDogs({
       include: [ req.models.breed ],
       order: [['score', 'DESC']],
-      limit: limit
+      limit: limit,
+      offset: page*limit
     }).then(function(dogs){
       var Breed = req.models.breed;
       return Breed.findAll().then(function(breeds) {
@@ -128,7 +109,7 @@ router.get('/breed/:fci/top/:topLimit', function(req, res, next) {
   });
 });
 
-router.get('/contest/:contestId/top/:topLimit', function(req, res, next) {
+router.get('/contest/:contestId', function(req, res, next) {
 
     // request validation here
 
@@ -143,12 +124,15 @@ router.get('/contest/:contestId/top/:topLimit', function(req, res, next) {
       error.status = 404;
       next(error);
     }
-    let limit = req.params.topLimit;
-    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : 1;
+    let limit = req.params.limit;
+    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+    let page = req.params.page;
+    page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
     contest.getDogs({
       include: [ req.models.breed ],
       order: [['score', 'DESC']],
-      limit: limit
+      limit: limit,
+      offset: page*limit
     }).then(function(dogs){
       var Breed = req.models.breed;
       return Breed.findAll().then(function(breeds) {
