@@ -6,27 +6,80 @@ const {constants: {SELECT_LIMIT} } = require('../parameters');
 // TODO: query each entry's achievements and calculat score
 router.get('/', function(req, res, next) {
 
-    // request validation here
+    if (req.query.contest_id) {
+      let page = req.params.page;
+      page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+      let limit = req.params.limit;
+      limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+      return res.redirect("/entries/contest/" + req.query.contest_id + "?"
+        + "limit=" + limit.toString()
+        + "&page=" + page.toString());
+    }
 
     next();
   }, function(req, res, next) {
   var Entry = req.models.entry;
   var Dog = req.models.dog;
   var Contest = req.models.contest;
+
   let page = req.params.page;
   page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
   let limit = req.params.limit;
   limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+
   Entry.findAll({
     include: [Dog, Contest],
     limit: limit,
     offset: page*limit
-  })
-    .then(function(entries){
-      res.render("list", {entries: entries});
+  }).then(function(entries){
+    return Contest.findAll().then(contests => {
+      res.render("list", {contests: contests, entries: entries});
+    });
+  }).catch( function(error){
+    next(error);
+  });
+});
+
+router.get('/contest/:contestId', function(req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function(req, res, next) {
+  const Dog = req.models.dog;
+  const Breed = req.models.breed;
+  const Contest = req.models.contest;
+  let contestId = req.params.contestId;
+  Contest.findById(contestId).then(function(contest) {
+    if (!contest) {
+      var error = new Error("Can't find the contest with id: " + contestId);
+      error.status = 404;
+      next(error);
+    }
+
+    let limit = req.params.limit;
+    limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
+    let page = req.params.page;
+    page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+
+    contest.getEntries({
+      include: [{
+        model: Dog,
+        include: [Breed]
+      }],
+      limit: limit,
+      order: [[Dog, 'score', 'DESC']],
+      offset: page*limit
+    }).then(function(entries){
+      return Contest.findAll().then(contests => {
+        res.render("top_contest", {contest: contest, contests: contests, entries: entries});
+      });
     }).catch( function(error){
       next(error);
     });
+  }).catch( function(error){
+    next(error);
+  });
 });
 
 router.post('/',
