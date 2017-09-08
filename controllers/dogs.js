@@ -37,10 +37,7 @@ router.get('/', function(req, res, next) {
   }).then(function(dogs){
     var Breed = req.models.breed;
     return Breed.findAll().then(function(breeds) {
-      var Contest = req.models.contest;
-      return Contest.findAll().then(function(contests) {
-        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
-      });
+      res.render("list", {dogs: dogs, breeds: breeds});
     });
   }).catch( function(error){
     next(error);
@@ -63,10 +60,7 @@ router.get('/top/:limit', function(req, res, next) {
   }).then(function(dogs){
     var Breed = req.models.breed;
     return Breed.findAll().then(function(breeds) {
-      var Contest = req.models.contest;
-      return Contest.findAll().then(function(contests) {
-        res.render("list", {dogs: dogs, breeds: breeds, contests: contests});
-      });
+      res.render("list", {dogs: dogs, breeds: breeds});
     });
   }).catch( function(error){
     next(error);
@@ -100,10 +94,7 @@ router.get('/breed/:fci', function(req, res, next) {
     }).then(function(dogs){
       var Breed = req.models.breed;
       return Breed.findAll().then(function(breeds) {
-        var Contest = req.models.contest;
-        return Contest.findAll().then(function(contests) {
-          res.render("top_breed", {breed: breed, dogs: dogs, breeds: breeds, contests: contests});
-        });
+        res.render("top_breed", {breed: breed, dogs: dogs, breeds: breeds});
       });
     }).catch( function(error){
       next(error);

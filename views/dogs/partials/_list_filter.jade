@@ -12,17 +12,6 @@ div.container
                 'selected' : undefined
               )
               =bre.name
-      label.col-sm-1.control-label(for='Dog_contest_id') Contest
-      div.col-sm-2
-        select.form-control( name='contest_id', id='Dog_contest_id')
-          option(value='')
-            | --select--
-          for con in contests
-            option(value=con.id,
-              selected=(contest && contest.id == con.fci) ?
-                'selected' : undefined
-              )
-              =con.name
       div.col-sm-1
         input.btn.btn-default(type='submit' value='Submit')
 
