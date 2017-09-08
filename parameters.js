@@ -4,5 +4,7 @@ module.exports = {
       project_title: "Dogbiz BillBoard",
     }
   },
-  select_limit: 100
+  constants: {
+    SELECT_LIMIT: 100
+  }
 }

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var partials = express.Router();
 var DateHelper = require("../lib/date-helper.js");
-const {select_limit: SELECT_LIMIT } = require('../parameters');
+const {constants: {SELECT_LIMIT} } = require('../parameters');
 
 router.get('/', function(req, res, next) {
 

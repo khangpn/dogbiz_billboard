@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var partials = express.Router();
+const {constants: {SELECT_LIMIT} } = require('../parameters');
 
-//----------------- Angular App--------------------
 // TODO: query each entry's achievements and calculat score
 router.get('/', function(req, res, next) {
 
@@ -13,8 +13,14 @@ router.get('/', function(req, res, next) {
   var Entry = req.models.entry;
   var Dog = req.models.dog;
   var Contest = req.models.contest;
+  let page = req.params.page;
+  page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
+  let limit = req.params.limit;
+  limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
   Entry.findAll({
-    include: [Dog, Contest]
+    include: [Dog, Contest],
+    limit: limit,
+    offset: page*limit
   })
     .then(function(entries){
       res.render("list", {entries: entries});
@@ -165,7 +171,6 @@ router.get('/:id/edit',
       next(error);
     });
 });
-//--------------------------------------------------------
 
 //----------------- Partials section --------------------
 partials.get('/:name', function (req, res) {
