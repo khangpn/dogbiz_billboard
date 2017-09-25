@@ -221,11 +221,7 @@ router.get('/:id',
       return dog.getAchievements({
         include: [req.models.contest]
       }).then(achievements => {
-        return dog.getEntries({
-          include: [req.models.contest]
-        }).then(entries => {
-          res.render('view', {dog: dog, entries: entries, achievements: achievements});
-        });
+        res.render('view', {dog: dog, achievements: achievements});
       });
     }).catch(function(error) {
       next(error);

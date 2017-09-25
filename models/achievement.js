@@ -3,6 +3,11 @@ var calculateScore = require('../lib/score-helper');
 
 module.exports = function(sequelize, DataTypes) {
   var Achievement = sequelize.define('achievement', {
+			id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
       rank: { 
         type: DataTypes.INTEGER,
         allowNull: false,

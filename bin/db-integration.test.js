@@ -27,7 +27,7 @@ models.sequelize.sync().then(function() {
     fullname: "Bach Tran",
   }).then(function() {
     return models.dog.create({
-      id: "ID101",
+      chipId: "ID101",
       name: "Ly Ly",
       birthday: new Date(2015, 5, 14),
       gender: false,
