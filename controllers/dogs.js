@@ -228,6 +228,35 @@ router.get('/:id',
     });
 });
 
+router.get('/chipId/:chipId', 
+  function (req, res, next) {
+
+    // request validation here
+
+    next();
+  }, function (req, res, next) {
+    var Dog = req.models.dog;
+    Dog.findOne({
+      where: {
+        chipId: req.params.chipId
+      },
+      include: [req.models.breed]
+    }).then(function(dog) {
+      if (!dog) {
+        var error = new Error("Can't find the dog with chip ID: " + req.params.chipId);
+        error.status = 404;
+        next(error);
+      }
+      return dog.getAchievements({
+        include: [req.models.contest]
+      }).then(achievements => {
+        res.render('view', {dog: dog, achievements: achievements});
+      });
+    }).catch(function(error) {
+      next(error);
+    });
+});
+
 router.put('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {

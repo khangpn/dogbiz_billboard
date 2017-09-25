@@ -8,6 +8,7 @@ div.panel.panel-default
           tr
             if isAdmin
               th ID
+            th Chip ID
             th Name
             th Gender
             th Score
@@ -17,6 +18,8 @@ div.panel.panel-default
               if isAdmin
                 td
                   a(href='/dogs/' + dog.id)=dog.id
+              td
+                a(href='/dogs/chipId' + dog.chipId)=dog.chipId
               td
                 a(href='/dogs/' + dog.id)=dog.name
               td

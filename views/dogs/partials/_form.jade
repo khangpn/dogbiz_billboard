@@ -4,16 +4,16 @@ script(src='/javascripts/dogs/partials/_form.js')
 
 form.form-horizontal(action=(!dog || dog.isNewRecord) ? 
 '/dogs' : '/dogs/'+dog.id, method="post")
-  if dog
+  if (dog && !dog.isNewRecord)
     input(type="hidden", name="_method", value="put")
   div.form-group
-    label.col-sm-2.control-label(for='Dog_id') ID
+    label.col-sm-2.control-label(for='Dog_chipId') Chip ID
     div.col-sm-10
       input.form-control(type='text',
-        name='id',
-        id='Dog_id',
-        placeholder='ID',
-        value= dog ? dog.id : "")
+        name='chipId',
+        id='Dog_chipId',
+        placeholder='Chip ID',
+        value= dog ? dog.chipId : "")
   div.form-group
     label.col-sm-2.control-label(for='Dog_name') Name
     div.col-sm-10

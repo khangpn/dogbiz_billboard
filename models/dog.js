@@ -2,10 +2,9 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Dog = sequelize.define('dog', {
-      id: { 
+      chipId: { 
         type: DataTypes.STRING, 
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
       },
       name: { 
         type: DataTypes.STRING, 
