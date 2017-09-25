@@ -76,14 +76,8 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
-    Dog.hasMany(models.entry, {
-      onDelete: "CASCADE",
-      foreignKey: {
-        allowNull: false
-      }
-    });
     Dog.belongsToMany(models.contest, {
-      through: models.entry
+      through: models.achievement
     });
   };
 

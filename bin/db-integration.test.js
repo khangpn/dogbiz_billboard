@@ -45,24 +45,17 @@ models.sequelize.sync().then(function() {
         address: "Ho Chi Minh City, Vietnam",
         note: "An open show for all kinds of dog"
       }).then(function(contest) {
-        return models.entry.create({
+        return models.achievement.create({
+          rank: 1,
+          dogClass: "Baby",
+          round: "Breed",
+          category: "Small Dog",
           dog_id: dog.id,
           contest_id: contest.id,
-          note: "The first entry of the show"
-        }).then(function(entry) {
-          return models.achievement.create({
-            rank: 1,
-            dogClass: "Baby",
-            round: "Breed",
-            category: "Small Dog",
-            dog_id: dog.id,
-            contest_id: contest.id,
-            judge_id: 1,
-            entry_id: 1,
-            note: "An impressive dog"
-          }).then(function() {
-            console.log(">>>>>>>>>> Finish Syncing");
-          });
+          judge_id: 1,
+          note: "An impressive dog"
+        }).then(function() {
+          console.log(">>>>>>>>>> Finish Syncing");
         });
       });
     });

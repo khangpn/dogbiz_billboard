@@ -79,29 +79,8 @@ router.post('/',
   function(req, res, next) {
     var data = req.body;
     var Achievement = req.models.achievement;
-    var Entry = req.models.entry;
-    return Entry.findOne({
-      where: {
-        contest_id: data.contest_id,
-        dog_id: data.dog_id,
-      }
-    }) .then(function(entry){
-      if (!entry) {
-        var error = new Error("Can't find the entry with contest_id: " + data.contest_id +
-          " and dog_id: " + data.dog_id);
-        error.status = 404;
-        next(error);
-      }
-      data.entry_id = entry.id;
-      
-      return Achievement.create(data).then(function(achievement){
-        res.redirect("/achievements/" + achievement.id); 
-      }).catch ( function(error){
-        var cb = function(judges) {
-          res.render("create", {error: error, judges: judges});
-        }
-        return getJudgeList(req.models.judge, cb);
-      });
+    return Achievement.create(data).then(function(achievement){
+      res.redirect("/achievements/" + achievement.id); 
     }).catch ( function(error){
       var cb = function(judges) {
         res.render("create", {error: error, judges: judges});

@@ -133,9 +133,6 @@ module.exports = function(sequelize, DataTypes) {
     Achievement.belongsTo(models.judge, {
       onDelete: "SET NULL"
     });
-    Achievement.belongsTo(models.entry, {
-      onDelete: "SET NULL"
-    });
   };
 
   return Achievement;

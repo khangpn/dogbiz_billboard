@@ -81,13 +81,8 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
-    Contest.hasMany(models.entry, {
-      foreignKey: {
-        allowNull: false
-      }
-    });
     Contest.belongsToMany(models.dog, {
-      through: models.entry
+      through: models.achievement
     });
   };
 
