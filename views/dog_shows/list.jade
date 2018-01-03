@@ -3,7 +3,7 @@ extends ../layout
 block content
   div.panel.panel-default
     div.panel-heading
-      h3.panel-title Contests List
+      h3.panel-title DogShows List
     div.panel-body
       div.table-responsive
         table.table.table-hover
@@ -15,14 +15,14 @@ block content
               th Date
               th Address
           tbody
-            for contest in contests
+            for dog_show in dog_shows
               tr
                 if isAdmin
                   td
-                    a(href='/contests/' + contest.id)=contest.id
+                    a(href='/dog_shows/' + dog_show.id)=dog_show.id
                 td
-                  a(href='/contests/' + contest.id)=contest.name
+                  a(href='/dog_shows/' + dog_show.id)=dog_show.name
                 td
-                  =contest.startDate
+                  =dog_show.startDate
                 td
-                  =contest.address
+                  =dog_show.address

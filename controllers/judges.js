@@ -97,7 +97,7 @@ router.get('/:id',
         next(error);
       }
       return judge.getMarks({
-        include: [req.models.contest]
+        include: [req.models.dog_show]
       }).then(marks => {
         res.render('view', {judge: judge, marks: marks});
       });

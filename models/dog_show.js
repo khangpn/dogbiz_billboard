@@ -1,17 +1,17 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var Contest = sequelize.define('contest', {
+  var DogShow = sequelize.define('dog_show', {
       name: { 
         type: DataTypes.STRING, 
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Contest name is required"
+            msg: "DogShow name is required"
           },
           len: {
             args: [1, 128],
-            msg: "Contest name should be from 1 to 128 characters length"
+            msg: "DogShow name should be from 1 to 128 characters length"
           }
         }
       },
@@ -46,45 +46,45 @@ module.exports = function(sequelize, DataTypes) {
       underscored: true,
       freezeTableName: true,
       hooks: {
-        beforeValidate: function(contest, options) {
-          updateContestDateAndYear(contest);
+        beforeValidate: function(dogShow, options) {
+          updateDogShowDateAndYear(dogShow);
         }
       }
     }
   );
 
-  var updateContestDateAndYear = function(contest) {
-    if (contest.isNewRecord || contest.changed("startDate")) {
-      var dateObj = parseContestDate(contest.startDate);
+  var updateDogShowDateAndYear = function(dogShow) {
+    if (dogShow.isNewRecord || dogShow.changed("startDate")) {
+      var dateObj = parseDogShowDate(dogShow.startDate);
       if (dateObj !== null) {
-        contest.setDataValue("startDate", dateObj);
-        var year = getContestYear(dateObj);
+        dogShow.setDataValue("startDate", dateObj);
+        var year = getDogShowYear(dateObj);
         if (year !== null) {
-          contest.setDataValue("year", year);
+          dogShow.setDataValue("year", year);
         }
       }
     }
   }
 
-  var getContestYear = function(startDate) {
+  var getDogShowYear = function(startDate) {
     return typeof startDate === "object" ? startDate.getFullYear() : null;
   }
 
-  var parseContestDate = function(startDate) {
+  var parseDogShowDate = function(startDate) {
     return typeof startDate === "string" ? new Date(startDate) : null;
   }
 
   // Class methods, new from Seq v4
-  Contest.associate = function(models) {
-    Contest.hasMany(models.achievement, {
+  DogShow.associate = function(models) {
+    DogShow.hasMany(models.achievement, {
       foreignKey: {
         allowNull: false
       }
     });
-    Contest.belongsToMany(models.dog, {
+    DogShow.belongsToMany(models.dog, {
       through: models.achievement
     });
   };
 
-  return Contest;
+  return DogShow;
 };

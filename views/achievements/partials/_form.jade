@@ -7,13 +7,13 @@ form.form-horizontal(action=(!achievement || achievement.isNewRecord) ?
       value=achievement.id)
     input(type="hidden", name="_method", value="put")
   div.form-group
-    label.col-sm-2.control-label(for='Achievement_name') Contest
+    label.col-sm-2.control-label(for='Achievement_name') DogShow
     div.col-sm-10
       input.form-control(type='text',
-        name='contest_id',
-        id='Achievement_contest_id',
-        placeholder='Contest ID',
-        value= achievement ? achievement.contest_id : "")
+        name='dog_show_id',
+        id='Achievement_dog_show_id',
+        placeholder='DogShow ID',
+        value= achievement ? achievement.dog_show_id : "")
   div.form-group
     label.col-sm-2.control-label(for='Achievement_name') Dog
     div.col-sm-10

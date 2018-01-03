@@ -39,19 +39,19 @@ models.sequelize.sync().then(function() {
       note: "A pretty dog",
       breed_fci: 1
     }).then(function(dog) {
-      return models.contest.create({
+      return models.dog_show.create({
         name: "HCM open 2",
         startDate: new Date(2017, 5, 14),
         address: "Ho Chi Minh City, Vietnam",
         note: "An open show for all kinds of dog"
-      }).then(function(contest) {
+      }).then(function(dog_show) {
         return models.achievement.create({
           rank: 1,
           dogClass: "Baby",
           round: "Breed",
           category: "Small Dog",
           dog_id: dog.id,
-          contest_id: contest.id,
+          dog_show_id: dog_show.id,
           judge_id: 1,
           note: "An impressive dog"
         }).then(function() {

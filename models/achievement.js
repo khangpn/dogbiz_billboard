@@ -129,7 +129,7 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
-    Achievement.belongsTo(models.contest, {
+    Achievement.belongsTo(models.dog_show, {
       onDelete: "CASCADE",
       foreignKey: {
         allowNull: false

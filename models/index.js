@@ -24,6 +24,7 @@ fs
 // This is used to prevent the Model load their associations 
 //before  theirs are defined in Sequelize
 Object.keys(db).forEach(function(modelName) {
+  console.log("modelName", modelName)
   if ("associate" in db[modelName]) {
     db[modelName].associate(db);
   }

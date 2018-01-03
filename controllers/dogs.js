@@ -219,7 +219,7 @@ router.get('/:id',
         next(error);
       }
       return dog.getAchievements({
-        include: [req.models.contest]
+        include: [req.models.dog_show]
       }).then(achievements => {
         res.render('view', {dog: dog, achievements: achievements});
       });
@@ -248,7 +248,7 @@ router.get('/chipId/:chipId',
         next(error);
       }
       return dog.getAchievements({
-        include: [req.models.contest]
+        include: [req.models.dog_show]
       }).then(achievements => {
         res.render('view', {dog: dog, achievements: achievements});
       });

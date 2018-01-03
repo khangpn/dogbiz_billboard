@@ -10,17 +10,17 @@ router.get('/', function(req, res, next) {
 
     next();
   }, function(req, res, next) {
-  var Contest = req.models.contest;
+  var DogShow = req.models.dog_show;
   let page = req.params.page;
   page = (!isNaN(page) && parseInt(page) > 0) ? (parseInt(page) - 1) : 0;
   let limit = req.params.limit;
   limit = (!isNaN(limit) && parseInt(limit) > 0) ? parseInt(limit) : SELECT_LIMIT;
-  Contest.findAll({
+  DogShow.findAll({
     limit: limit,
     offset: page*limit
   })
-    .then(function(contests){
-      res.render("list", {contests: contests});
+    .then(function(dog_shows){
+      res.render("list", {dog_shows: dog_shows});
     }).catch( function(error){
       next(error);
     });
@@ -53,9 +53,9 @@ router.post('/',
     next();
   }, function(req, res, next) {
     var data = req.body;
-    var Contest = req.models.contest;
-    return Contest.create(data).then(function(contest){
-      res.redirect("/contests/" + contest.id); 
+    var DogShow = req.models.dog_show;
+    return DogShow.create(data).then(function(dog_show){
+      res.redirect("/dog_shows/" + dog_show.id); 
     }).catch ( function(error){
       res.render("create", {error: error});
     });
@@ -84,13 +84,13 @@ router.delete('/:id',
 
     next();
   }, function(req, res, next) {
-    var Contest = req.models.contest;
-    Contest.destroy({
+    var DogShow = req.models.dog_show;
+    DogShow.destroy({
       where: { 
         id: req.params.id 
       }}).then(function(affectedRow){
-        if (affectedRow == 1) return res.redirect("/contests");
-        var err = new Error("Can't find the contest with id: " + data.id);
+        if (affectedRow == 1) return res.redirect("/dog_shows");
+        var err = new Error("Can't find the dog_show with id: " + data.id);
         error.status = 404;
         next(error);
       }).catch( function(error){
@@ -106,17 +106,17 @@ router.get('/:id',
 
     next();
   }, function (req, res, next) {
-    var Contest = req.models.contest;
-    Contest.findById(req.params.id).then(function(contest) {
-      if (!contest) {
-        var err = new Error("Can't find the contest with id: " + req.params.id);
+    var DogShow = req.models.dog_show;
+    DogShow.findById(req.params.id).then(function(dog_show) {
+      if (!dog_show) {
+        var err = new Error("Can't find the dog_show with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
-      return contest.getAchievements({
+      return dog_show.getAchievements({
         include: [req.models.dog]
       }).then(achievements => {
-        res.render('view', {contest: contest, achievements: achievements});
+        res.render('view', {dog_show: dog_show, achievements: achievements});
       });
     }).catch(function(error) {
       next(error);
@@ -150,17 +150,17 @@ router.put('/:id',
     next();
   }, function(req, res, next) {
     var data = req.body;
-    var Contest = req.models.contest;
-    Contest.findById(data.id).then(function(contest) {
-      if (!contest) {
-        var err = new Error("Can't find the contest with id: " + data.id);
+    var DogShow = req.models.dog_show;
+    DogShow.findById(data.id).then(function(dog_show) {
+      if (!dog_show) {
+        var err = new Error("Can't find the dog_show with id: " + data.id);
         error.status = 404;
         next(error);
       }
-      return contest.update(data).then(function(contest){
-        res.redirect("/contests/" + contest.id); 
+      return dog_show.update(data).then(function(dog_show){
+        res.redirect("/dog_shows/" + dog_show.id); 
       }, function (error) {
-        res.render("edit", {contest: contest, error: error}); 
+        res.render("edit", {dog_show: dog_show, error: error}); 
       });
     }).catch( function(error){
       next(error);
@@ -177,16 +177,16 @@ router.get('/:id/edit',
     }
     next();
   }, function (req, res, next) {
-    var Contest = req.models.contest;
-    Contest.findById(req.params.id, {
+    var DogShow = req.models.dog_show;
+    DogShow.findById(req.params.id, {
       include: [req.models.achievement]
-    }).then(function(contest) {
-      if (!contest) {
-        var err = new Error("Can't find the contest with id: " + req.params.id);
+    }).then(function(dog_show) {
+      if (!dog_show) {
+        var err = new Error("Can't find the dog_show with id: " + req.params.id);
         error.status = 404;
         next(error);
       }
-      res.render('edit', {contest: contest});
+      res.render('edit', {dog_show: dog_show});
     }).catch(function(error) {
       next(error);
     });

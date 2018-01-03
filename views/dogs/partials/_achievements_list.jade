@@ -8,7 +8,7 @@ div.panel.panel-default
           tr
             if isAdmin
               th ID
-            th Contest
+            th DogShow
             th Category
             th Rank
             th Dog Class
@@ -21,7 +21,7 @@ div.panel.panel-default
                 td
                   a(href='/achievements/' + achievement.id)=achievement.id
               td
-                a(href='/contests/' + achievement.contest.id)=achievement.contest.name
+                a(href='/dog_shows/' + achievement.dog_show.id)=achievement.dog_show.name
               td
                 =achievement.category
               td

@@ -7,14 +7,14 @@ block content
     div.panel-body
       div.container-fluid
         div.row
-          label.col-md-2 Contest Name:
+          label.col-md-2 DogShow Name:
           div.col-md-10
-            a(href='/contests/'+achievement.contest.id) 
-              = achievement.contest.name
+            a(href='/dog_shows/'+achievement.dog_show.id) 
+              = achievement.dog_show.name
         div.row
-          label.col-md-2 Contest Date:
+          label.col-md-2 DogShow Date:
           div.col-md-10
-            = achievement.contest.startDate
+            = achievement.dog_show.startDate
         div.row
           label.col-md-2 Judge Name:
           div.col-md-10

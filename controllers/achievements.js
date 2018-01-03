@@ -50,7 +50,7 @@ router.get('/', function(req, res, next) {
   var Achievement = req.models.achievement;
   Achievement.findAll({
     include: [ 
-      req.models.contest,
+      req.models.dog_show,
       req.models.judge,
       req.models.dog 
     ]
@@ -142,7 +142,7 @@ router.get('/:id',
     var Achievement = req.models.achievement;
     Achievement.findById(req.params.id, {
       include: [
-        req.models.contest,
+        req.models.dog_show,
         req.models.judge,
         req.models.dog
       ]
@@ -216,7 +216,7 @@ router.get('/:id/edit',
     Achievement.findById(req.params.id, {
       include: [
         req.models.dog,
-        req.models.contest
+        req.models.dog_show
       ]
     }).then(function(achievement) {
       if (!achievement) {

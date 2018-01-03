@@ -3,36 +3,36 @@ extends ../layout
 block content
   div.panel.panel-default
     div.panel-heading
-      h3.panel-title Contest Profile
+      h3.panel-title DogShow Profile
     div.panel-body
       div.container-fluid
         div.row
           label.col-md-2 Name:
           div.col-md-10
-            = contest.name
+            = dog_show.name
         div.row
           label.col-md-2 Date:
           div.col-md-10
-            = contest.startDate
+            = dog_show.startDate
         div.row
           label.col-md-2 Year:
           div.col-md-10
-            = contest.year
+            = dog_show.year
         div.row
           label.col-md-2 Address:
           div.col-md-10
-            = contest.address
+            = dog_show.address
         div.row
           label.col-md-2 Note:
           div.col-md-10
-            = contest.note
+            = dog_show.note
         if isAdmin
           div.row
             div.col-sm-1
-              form.form-horizontal(action='/contests/'+contest.id, method="post")
+              form.form-horizontal(action='/dog_shows/'+dog_show.id, method="post")
                 input(type="hidden", name="_method", value="delete")
-                input.btn.btn-danger(type='submit', value='Delete Contest') 
+                input.btn.btn-danger(type='submit', value='Delete DogShow') 
             div.col-sm-offset-2.col-sm-3
-              a.btn.btn-default(href='/contests/'+contest.id+'/edit') 
-                | Edit Contest Profile
+              a.btn.btn-default(href='/dog_shows/'+dog_show.id+'/edit') 
+                | Edit DogShow Profile
   include ./partials/_achievements_list.jade

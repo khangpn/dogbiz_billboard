@@ -11,7 +11,7 @@ block content
             tr
               if isAdmin
                 th ID
-              th Contest
+              th DogShow
               th Judge
               th Dog
               th Category
@@ -23,7 +23,7 @@ block content
                   td
                     a(href='/achievements/' + achievement.id)=achievement.id
                 td
-                  a(href='/contests/' + achievement.contest.id)=achievement.contest.name
+                  a(href='/dog_shows/' + achievement.dog_show.id)=achievement.dog_show.name
                 td
                   a(href='/judges/' + achievement.judge.id)=achievement.judge.fullname
                 td
