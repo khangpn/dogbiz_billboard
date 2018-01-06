@@ -65,3 +65,6 @@ api/
 
 # KnP: remove static start script 
 start.sh
+
+# KnP: ignore built js
+public/dist/*

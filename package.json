@@ -6,6 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
+    "dev": "./node_modules/.bin/webpack -d --watch",
     "sync_db:prod": "NODE_ENV=production node ./bin/db-integration.js",
     "sync_db:dev": "NODE_ENV=development node ./bin/db-integration.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -47,8 +48,22 @@
     "pg-hstore": "^2.3.2",
     "promise": "^8.0.1",
     "pug": "^2.0.0-rc.3",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.32.0",
+    "react-dom": "^16.2.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "sequelize": "^4.4.9",
     "serve-favicon": "~2.4.2",
     "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.10.0"
   }
 }
