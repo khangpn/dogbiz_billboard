@@ -1,7 +1,6 @@
 extends ../layout
 
 block content
-  script(src='/dist/dogshow.min.js')
   div.panel.panel-default
     div.panel-heading
       h3.panel-title DogShow Profile
@@ -36,4 +35,6 @@ block content
             div.col-sm-offset-2.col-sm-3
               a.btn.btn-default(href='/dog_shows/'+dog_show.id+'/edit') 
                 | Edit DogShow Profile
+  div#root
   include ./partials/_achievements_list.jade
+  script(src='/dist/dogshow.min.js')
