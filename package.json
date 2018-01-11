@@ -1,6 +1,6 @@
 {
   "name": "dogbiz_billboard",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "The Web-platform billboard for dogs from dog shows.",
   "private": true,
   "main": "app.js",
@@ -48,9 +48,11 @@
     "pg": "^7.1.2",
     "pg-hstore": "^2.3.2",
     "promise": "^8.0.1",
+    "prop-types": "^15.6.0",
     "pug": "^2.0.0-rc.3",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
+    "react-bootstrap-typeahead": "^2.0.3",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -62,9 +64,11 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
+    "clean-webpack-plugin": "^0.1.17",
     "nodemon": "^1.14.8",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
