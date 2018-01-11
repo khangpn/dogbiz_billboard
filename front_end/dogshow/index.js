@@ -7,9 +7,11 @@ import App from './components/app'
 
 let store = createStore(dogShowApp)
 
-render (
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
+document.addEventListener('DOMContentLoaded', () => {
+  render (
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  )
+})
