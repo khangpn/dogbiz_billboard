@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Panel, FormGroup, FormControl, HelpBlock, ControlLabel } from 'react-bootstrap'
 import ValidableField from '../../../utils/components/validable-field.js'
+import { setAchievementField } from '../../actions/form-actions.js'
 
 class AchievementForm extends Component {
   render() {
-    const { dogShowId, dogId="" } = this.props
+    const { dogShowId, dogId } = this.props
     const { onDogChange } = this.props
     return (
       <section>
@@ -24,14 +25,19 @@ AchievementForm.defaultProps = {
 }
 
 function mapStateToProps(state) {
-  return {}
+  console.log("State", state)
+  const { dogId } = state.form
+  return {
+    dogId
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onDogChanged: (e) => {
-      e.prevenDefault()
+    onDogChange: (e) => {
+      e.preventDefault()
       console.log(e.target.value)
+      dispatch(setAchievementField("dogId", e.target.value))
     }
   }
 }
