@@ -4,12 +4,13 @@ import { HelpBlock, FormGroup, FormControl, ControlLabel, Col } from 'react-boot
 
 class ValidableField extends Component {
   render() {
-    const { value, required, label, labelSize, fieldSize, message='', onChange } = this.props
+    const { value, required, label, labelSize, fieldSize,
+      message='', componentClass, onChange } = this.props
     return (
       <FormGroup validationState={this.validate(this.props) ? 'success' : 'error'}>
         <Col componentClass={ControlLabel} xs={labelSize}>{label} {required ? '*' : ''}</Col>
         <Col xs={fieldSize}>
-          <FormControl value={value} required={required} onChange={onChange} >
+          <FormControl value={value} required={required} onChange={onChange} componentClass={componentClass} >
             {this.props.children}
           </FormControl>
         </Col>
