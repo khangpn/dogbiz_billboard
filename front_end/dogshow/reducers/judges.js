@@ -14,9 +14,9 @@ const allIds = (state = [], action) => {
   }
 }
 
-const dogs = combineReducers({
+const judges = combineReducers({
   byId,
   allIds
 })
 
-export default dogs
+export default judges

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import judges from './judges'
 import dogs from './dogs'
 import achievements from './achievements'
 import * as ActionTypes from '../constants/action-types.js'
@@ -13,8 +14,8 @@ const form = (state = {}, action) => {
       return {...state, judgeId: action.judgeId}
     case ActionTypes.FORM_SET_DOG_CLASS:
       return {...state, dogClass: action.dogClass}
-    case ActionTypes.FORM_SET_ROUND_TYPE:
-      return {...state, roundType: action.roundType}
+    case ActionTypes.FORM_SET_ROUND:
+      return {...state, round: action.round}
     case ActionTypes.FORM_SET_CATEGORY:
       return {...state, category: action.category}
     case ActionTypes.FORM_SET_RANK:
@@ -29,6 +30,7 @@ const form = (state = {}, action) => {
 }
 
 const dogShowApp = combineReducers({
+  judges,
   dogs,
   form,
   achievements
