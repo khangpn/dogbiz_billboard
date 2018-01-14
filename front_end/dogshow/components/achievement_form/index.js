@@ -8,6 +8,7 @@ import JudgeSelectField from './judge-select-field.js'
 import DogClassSelectField from './dog-class-select-field.js'
 import RoundSelectField from './round-select-field.js'
 import CategorySelectField from './category-select-field.js'
+import DogSelectField from './dog-select-field.js'
 
 class AchievementForm extends Component {
   render() {
@@ -16,9 +17,10 @@ class AchievementForm extends Component {
     const { onDogChange, onRankChange, onNoteChange,
       onJudgeIdChange, onDogClassChange, onRoundChange,
       onCategoryChange } = this.props
+    //<ValidableField value={dogId} required label="Dog" onChange={onDogChange}/>
     return (
       <Form horizontal>
-        <ValidableField value={dogId} required label="Dog" onChange={onDogChange}/>
+        <DogSelectField onChange={onDogChange} required value={dogId} />
         <JudgeSelectField onChange={onJudgeIdChange} value={judgeId} required />
         <DogClassSelectField onChange={onDogClassChange} value={dogClass} required />
         <RoundSelectField onChange={onRoundChange} value={round} required />

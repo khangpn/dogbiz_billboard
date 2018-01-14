@@ -50,6 +50,7 @@
     "promise": "^8.0.1",
     "prop-types": "^15.6.0",
     "pug": "^2.0.0-rc.3",
+    "qs": "^6.5.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-typeahead": "^2.0.3",
