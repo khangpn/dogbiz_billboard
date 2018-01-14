@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import SelectField from '../../../utils/components/select-field'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import { FormGroup, ControlLabel, Col } from 'react-bootstrap'
 
 class JudgeSelectField extends Component {
   render() {
-    const { judges={} } = this.props
+    const { judges={}, value, required } = this.props
     const { byId, allIds } = judges
     const options = allIds.map( judgeId => {
       return {
@@ -13,9 +14,23 @@ class JudgeSelectField extends Component {
         text: `${judgeId} - ${byId[judgeId]}`
       }
     })
+    const { fetchJudges, onChange } = this.props
     return  (
-      <SelectField options={options} label='Judge' firstEmpty {...this.props}/>
+      <FormGroup validationState={this.validate(this.props) ? 'success' : 'error'}>
+        <Col componentClass={ControlLabel} xs={2}>Judges {required ? '*' : ''}</Col>
+        <Col xs={3}>
+          <Typeahead options={options} labelKey='text' selected={value}
+            onChange={ onChange } onInputChange={ fetchJudges }/>
+        </Col>
+      </FormGroup>
     )
+  }
+
+  validate({ required = false, value = ''}) {
+    if(!required) {
+      return true
+    }
+    return value.trim() !== ''
   }
 }
 
@@ -38,4 +53,12 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null)(JudgeSelectField)
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchJudges: (judgeInput) => {
+      console.log(judgeInput)
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(JudgeSelectField)

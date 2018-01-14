@@ -15,13 +15,12 @@ class AchievementForm extends Component {
     const { dogShowId, dogId, rank, note, judgeId, dogClass,
       round, category } = this.props
     const { onDogChange, onRankChange, onNoteChange,
-      onJudgeIdChange, onDogClassChange, onRoundChange,
+      onJudgeChange, onDogClassChange, onRoundChange,
       onCategoryChange } = this.props
-    //<ValidableField value={dogId} required label="Dog" onChange={onDogChange}/>
     return (
       <Form horizontal>
         <DogSelectField onChange={onDogChange} required value={dogId} />
-        <JudgeSelectField onChange={onJudgeIdChange} value={judgeId} required />
+        <JudgeSelectField onChange={onJudgeChange} value={judgeId} required />
         <DogClassSelectField onChange={onDogClassChange} value={dogClass} required />
         <RoundSelectField onChange={onRoundChange} value={round} required />
         <CategorySelectField onChange={onCategoryChange} value={category} required />
@@ -61,7 +60,7 @@ function mapDispatchToProps(dispatch) {
       e.preventDefault();
       dispatch(setAchievementField("dogClass", e.target.value))
     },
-    onJudgeIdChange: (e) => {
+    onJudgeChange: (e) => {
       e.preventDefault();
       dispatch(setAchievementField("judgeId", e.target.value))
     },
