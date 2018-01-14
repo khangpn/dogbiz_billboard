@@ -72,9 +72,12 @@ function mapDispatchToProps(dispatch) {
       e.preventDefault();
       dispatch(setAchievementField("rank", e.target.value))
     },
-    onDogChange: (e) => {
-      e.preventDefault();
-      dispatch(setAchievementField("dogId", e.target.value))
+    onDogChange: (dog) => {
+      if (dog.length > 0) {
+        dispatch(setAchievementField("dogId", dog[0].value.toString()))
+      } else {
+        dispatch(setAchievementField("dogId", ''))
+      }
     }
   }
 }

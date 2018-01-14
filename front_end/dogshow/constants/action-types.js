@@ -1,5 +1,4 @@
 export const FORM_SET_DOG_ID = 'FORM_SET_DOG_ID'
-export const FORM_SET_DOGS = 'FORM_SET_DOGS'
 export const FORM_SET_SHOW_ID = 'FORM_SET_SHOW_ID'
 export const FORM_SET_JUDGE_ID = 'FORM_SET_JUDGE_ID'
 export const FORM_SET_DOG_CLASS = 'FORM_SET_DOG_CLASS'
@@ -8,6 +7,22 @@ export const FORM_SET_CATEGORY = 'FORM_SET_CATEGORY'
 export const FORM_SET_RANK = 'FORM_SET_RANK'
 export const FORM_SET_NOTE = 'FORM_SET_NOTE'
 export const FORM_CLEAR = 'FORM_CLEAR'
+export const FORM_FETCH_DOG_OPTIONS_REQUEST = 'FORM_FETCH_DOG_OPTIONS_REQUEST'
+export const FORM_FETCH_DOG_OPTIONS_SUCCESS = 'FORM_FETCH_DOG_OPTIONS_SUCCESS'
+export const FORM_FETCH_DOG_OPTIONS_FAILURE = 'FORM_FETCH_DOG_OPTIONS_FAILURE'
+
+// To use for attribute setting actions
+export const formSetters = {
+  dogId: FORM_SET_DOG_ID,
+  showId: FORM_SET_SHOW_ID,
+  judgeId: FORM_SET_JUDGE_ID,
+  dogClass: FORM_SET_DOG_CLASS,
+  round: FORM_SET_ROUND,
+  category: FORM_SET_CATEGORY,
+  rank: FORM_SET_RANK,
+  note: FORM_SET_NOTE
+}
+
 export const ADD_DOG_ENTITY = 'ADD_DOG_ENTITY'
 export const ADD_DOG_ENTITIES = 'ADD_DOG_ENTITIES'
 export const REMOVE_DOG_ENTITY = 'REMOVE_DOG_ENTITY'
@@ -21,14 +36,3 @@ export const ADD_ACHIEVEMENT_ENTITIES = 'ADD_ACHIEVEMENT_ENTITIES'
 export const REMOVE_ACHIEVEMENT_ENTITY = 'REMOVE_ACHIEVEMENT_ENTITY'
 export const CLEAR_ACHIEVEMENT_ENTITIES = 'CLEAR_ACHIEVEMENT_ENTITIES'
 
-// To use for attribute setting actions
-export const formSetters = {
-  dogId: FORM_SET_DOG_ID,
-  showId: FORM_SET_SHOW_ID,
-  judgeId: FORM_SET_JUDGE_ID,
-  dogClass: FORM_SET_DOG_CLASS,
-  round: FORM_SET_ROUND,
-  category: FORM_SET_CATEGORY,
-  rank: FORM_SET_RANK,
-  note: FORM_SET_NOTE
-}

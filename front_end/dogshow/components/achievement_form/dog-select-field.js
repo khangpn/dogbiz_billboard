@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Typeahead } from 'react-bootstrap-typeahead'
+import { AsyncTypeahead } from 'react-bootstrap-typeahead'
 import { FormGroup, ControlLabel, Col } from 'react-bootstrap'
+import { fetchDogs } from  '../../actions/form-actions.js'
 
 class DogSelectField extends Component {
   render() {
-    const { dogs={}, value, required } = this.props
-    const { byId, allIds } = dogs
-    const options = allIds.map( dogId => {
+    const { dogs=[], value, required, isLoading=false } = this.props
+    const options = dogs.map( dog => {
       return {
-        value: dogId,
-        text: `${dogId} - ${byId[dogId]}`
+        value: dog.id,
+        text: `${dog.chipId} - ${dog.name}`
       }
     })
     const { fetchDogs, onChange } = this.props
@@ -19,8 +19,8 @@ class DogSelectField extends Component {
       <FormGroup validationState={this.validate(this.props) ? 'success' : 'error'}>
         <Col componentClass={ControlLabel} xs={2}>Dogs {required ? '*' : ''}</Col>
         <Col xs={3}>
-          <Typeahead options={options} labelKey='text' selected={value}
-            onChange={ onChange } onInputChange={ fetchDogs }/>
+          <AsyncTypeahead options={options} labelKey='text' 
+            onChange={ onChange } onSearch={ fetchDogs } delay={200} isLoading={isLoading}/>
         </Col>
       </FormGroup>
     )
@@ -35,7 +35,7 @@ class DogSelectField extends Component {
 }
 
 DogSelectField.propTypes = {
-  dogs: PropTypes.object.isRequired,
+  dogs: PropTypes.array.isRequired,
   onChange: PropTypes.func,
   value: PropTypes.string,
   required: PropTypes.bool,
@@ -48,8 +48,9 @@ DogSelectField.defaultProps = {
 }
 
 function mapStateToProps(state) {
-  const { dogs } = state
+  const { form: { dogOptions: { isLoading=false, values: dogs = [] } = {} } } = state
   return { 
+    isLoading,
     dogs
   }
 }
@@ -57,7 +58,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchDogs: (dogInput) => {
-      console.log(dogInput)
+      dispatch(fetchDogs(dogInput))
     }
   }
 }
