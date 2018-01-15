@@ -35,9 +35,8 @@ router.get('/', function(req, res, next) {
     limit: SELECT_LIMIT
   }).then(function(dogs){
     res.json(dogs)
-    return null
   }).catch( function(error){
-    next(error);
+    res.status(500).json(error)
   });
 });
 

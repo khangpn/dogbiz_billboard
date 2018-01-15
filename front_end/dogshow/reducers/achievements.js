@@ -6,6 +6,8 @@ const byId = (state = {}, action) => {
   switch (action.type) {
     case ActionTypes.ADD_ACHIEVEMENT_ENTITIES:
       return EntityHelper.addEntities(state, action.achievements)
+    case ActionTypes.SAVE_ACHIEVEMENT_SUCCESS:
+      return EntityHelper.addEntity(state, action.achievement)
     case ActionTypes.CLEAR_ACHIEVEMENT_ENTITIES:
       return {}
     default:
@@ -17,6 +19,8 @@ const allIds = (state = [], action) => {
   switch (action.type) {
     case ActionTypes.ADD_ACHIEVEMENT_ENTITIES:
       return EntityHelper.addEntityIds(state, action.achievements)
+    case ActionTypes.SAVE_ACHIEVEMENT_SUCCESS:
+      return EntityHelper.addEntityId(state, action.achievement)
     case ActionTypes.CLEAR_ACHIEVEMENT_ENTITIES:
       return []
     default:

@@ -1,26 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Typeahead } from 'react-bootstrap-typeahead'
+import { AsyncTypeahead } from 'react-bootstrap-typeahead'
 import { FormGroup, ControlLabel, Col } from 'react-bootstrap'
+import { fetchJudges } from  '../../actions/form-actions.js'
 
 class JudgeSelectField extends Component {
   render() {
-    const { judges={}, value, required } = this.props
-    const { byId, allIds } = judges
-    const options = allIds.map( judgeId => {
+    const { judges=[], value, required, isLoading=false } = this.props
+    const options = judges.map( judge => {
       return {
-        value: judgeId,
-        text: `${judgeId} - ${byId[judgeId]}`
+        value: judge.id,
+        text: `${judge.id} - ${judge.fullname}`
       }
     })
+    console.log("Judges", options)
     const { fetchJudges, onChange } = this.props
     return  (
       <FormGroup validationState={this.validate(this.props) ? 'success' : 'error'}>
         <Col componentClass={ControlLabel} xs={2}>Judges {required ? '*' : ''}</Col>
         <Col xs={3}>
-          <Typeahead options={options} labelKey='text' selected={value}
-            onChange={ onChange } onInputChange={ fetchJudges }/>
+          <AsyncTypeahead options={options} labelKey='text' 
+            onChange={ onChange } onSearch={ fetchJudges } delay={200} isLoading={isLoading}/>
         </Col>
       </FormGroup>
     )
@@ -35,7 +36,7 @@ class JudgeSelectField extends Component {
 }
 
 JudgeSelectField.propTypes = {
-  judges: PropTypes.object.isRequired,
+  judges: PropTypes.array.isRequired,
   onChange: PropTypes.func,
   value: PropTypes.string,
   required: PropTypes.bool,
@@ -48,15 +49,17 @@ JudgeSelectField.defaultProps = {
 }
 
 function mapStateToProps(state) {
+  const { form: { judgeOptions: { isLoading=false, values: judges = [] } = {} } } = state
   return { 
-    judges: state.judges
+    isLoading,
+    judges
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchJudges: (judgeInput) => {
-      console.log(judgeInput)
+      dispatch(fetchJudges(judgeInput))
     }
   }
 }
