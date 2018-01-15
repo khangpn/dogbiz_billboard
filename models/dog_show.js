@@ -81,9 +81,10 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
-    DogShow.belongsToMany(models.dog, {
-      through: models.achievement
-    });
+    //DogShow.belongsToMany(models.dog, {
+    //  through: models.achievement,
+    //  unique: false
+    //});
   };
 
   return DogShow;
