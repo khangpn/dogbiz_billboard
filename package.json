@@ -8,6 +8,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "webpack": "./node_modules/.bin/webpack --watch",
+    "webpack:build": "./node_modules/.bin/webpack",
     "sync_db:prod": "NODE_ENV=production node ./bin/db-integration.js",
     "sync_db:dev": "NODE_ENV=development node ./bin/db-integration.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
