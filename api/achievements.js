@@ -95,7 +95,15 @@ router.post('/',
       if (created) {
         return achievement.validate().then( () => {
           return achievement.save().then( (achievement) => {
-            res.json({created, achievement})
+            return achievement.reload({
+              include: [ 
+                req.models.dog_show,
+                req.models.judge,
+                req.models.dog 
+              ]
+            }).then( () => {
+              res.json({created, achievement})
+            })
           }).catch ( function(error){
             console.error("Achievement save error", error)
             res.status(500).json(error)
