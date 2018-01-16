@@ -3,7 +3,7 @@ import { Panel } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import AchievementForm from './achievement_form'
 
-class AddAchievementTool extends Component {
+class AddAchievementPanel extends Component {
   render() {
     const { dogShowId } = this.props
     return (
@@ -19,11 +19,11 @@ class AddAchievementTool extends Component {
   }
 }
 
-AddAchievementTool.propTypes = {
+AddAchievementPanel.propTypes = {
   dogShowId: PropTypes.string.isRequired
 }
 
-AddAchievementTool.defaultProps = {
+AddAchievementPanel.defaultProps = {
 }
 
-export default AddAchievementTool
+export default AddAchievementPanel
