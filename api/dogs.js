@@ -7,37 +7,39 @@ const {constants: {SELECT_LIMIT} } = require('../parameters');
 router.get('/', function(req, res, next) {
 
     // request validation here
-    if (!req.query.searchTerm) {
-      return res.status(400).json({msg: "The search term is missing"})
-    }
 
     next();
   }, function(req, res, next) {
   const Dog = req.models.dog;
   const Sequelize = req.models.Sequelize;
   const Op = Sequelize.Op;
-  const searchTerm = req.query.searchTerm
-  Dog.findAll({
-    include: [req.models.breed],
-    where: {
-      [Op.or]: {
-        name: {
-          [Op.iLike]: `%${searchTerm}%`
-        },
-        chipId: {
-          [Op.iLike]: `%${searchTerm}%`
+  if (req.query.searchTerm) {
+    const searchTerm = req.query.searchTerm
+    return Dog.findAll({
+      include: [req.models.breed],
+      where: {
+        [Op.or]: {
+          name: {
+            [Op.iLike]: `%${searchTerm}%`
+          },
+          chipId: {
+            [Op.iLike]: `%${searchTerm}%`
+          }
         }
-      }
-    },
-    order: [
-      ['score', 'DESC']
-    ],
-    limit: SELECT_LIMIT
-  }).then(function(dogs){
-    res.json(dogs)
-  }).catch( function(error){
-    res.status(500).json(error)
-  });
+      },
+      order: [
+        ['score', 'DESC']
+      ],
+      limit: SELECT_LIMIT
+    }).then(function(dogs){
+      res.json(dogs)
+    }).catch( function(error){
+      res.status(500).json(error)
+    });
+  } else {
+    // KnP: atm, only support searching
+    return res.status(400).json({msg: "The search term is missing"})
+  }
 });
 
 //router.get('/top/:limit', function(req, res, next) {
