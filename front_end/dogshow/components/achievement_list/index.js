@@ -32,11 +32,19 @@ class AchievementList extends Component {
 
   renderRow(id, idx) {
     const { achievements: { byId={} } } = this.props
-    const achievement = achievements[id]
+    const achievement = byId[id]
     return (
-      <tr>
-        <th><Button href="">{idx}</Button></th>
-        <td>{achievement.dog.name}</td>
+      <tr key={idx}>
+        <th>
+          <Button href={`/achievements/${id}`} bsStyle={'link'}>
+            {idx+1}
+          </Button>
+          </th>
+        <td>
+          <Button href={`/achievements/${id}`} bsStyle={'link'}>
+            {achievement.dog.name}
+          </Button>
+        </td>
         <td>{achievement.round}</td>
         <td>{achievement.dogClass}</td>
         <td>{achievement.category}</td>

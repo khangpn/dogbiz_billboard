@@ -5,9 +5,9 @@ import EntityHelper from '../../utils/reducer-helper.js'
 const byId = (state = {}, action) => {
   switch (action.type) {
     case ActionTypes.ADD_ACHIEVEMENT_ENTITIES:
-      return EntityHelper.addEntities(state, action.achievements)
+      return {...EntityHelper.addEntities(state, action.achievements)}
     case ActionTypes.SAVE_ACHIEVEMENT_SUCCESS:
-      return EntityHelper.addEntity(state, action.achievement)
+      return {...EntityHelper.addEntity(state, action.achievement)}
     case ActionTypes.CLEAR_ACHIEVEMENT_ENTITIES:
       return {}
     default:
@@ -18,9 +18,9 @@ const byId = (state = {}, action) => {
 const allIds = (state = [], action) => {
   switch (action.type) {
     case ActionTypes.ADD_ACHIEVEMENT_ENTITIES:
-      return EntityHelper.addEntityIds(state, action.achievements)
+      return [...EntityHelper.addEntityIds(state, action.achievements)]
     case ActionTypes.SAVE_ACHIEVEMENT_SUCCESS:
-      return EntityHelper.addEntityId(state, action.achievement)
+      return [...EntityHelper.addEntityId(state, action.achievement)]
     case ActionTypes.CLEAR_ACHIEVEMENT_ENTITIES:
       return []
     default:

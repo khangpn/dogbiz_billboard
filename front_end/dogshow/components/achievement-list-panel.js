@@ -3,8 +3,14 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Panel } from 'react-bootstrap'
 import AchievementList from './achievement_list'
+import { searchAchievementsByShow } from '../actions/achievement-actions'
 
 class AchievementListPanel extends Component {
+  componentDidMount() {
+    const { fetchAchievements, dogShowId } = this.props
+    fetchAchievements(dogShowId)
+  }
+
   render() {
     const { achievements } = this.props
     return (
@@ -22,6 +28,7 @@ class AchievementListPanel extends Component {
 }
 
 AchievementListPanel.propTypes = {
+  dogShowId: PropTypes.string.isRequired,
   achievements: PropTypes.object.isRequired
 }
 
@@ -37,6 +44,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    fetchAchievements: (showId) => {
+      dispatch(searchAchievementsByShow(showId))
+    }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AchievementListPanel)

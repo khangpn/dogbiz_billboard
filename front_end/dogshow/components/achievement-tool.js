@@ -10,7 +10,7 @@ class AchievementTool extends Component {
     return (
       <section>
         <AddAchievementPanel dogShowId={dogShowId}/>
-        <AchievementListPanel />
+        <AchievementListPanel dogShowId={dogShowId}/>
       </section>
     )
   }
