@@ -23,7 +23,7 @@ export function clearAchievements () {
 
 export function removeAchievement(achievement) {
   return {
-    type: achievementEntities.clear,
+    type: achievementEntities.remove,
     achievement
   }
 }
