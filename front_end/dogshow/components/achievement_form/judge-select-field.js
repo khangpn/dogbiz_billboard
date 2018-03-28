@@ -14,7 +14,6 @@ class JudgeSelectField extends Component {
         text: `${judge.id} - ${judge.fullname}`
       }
     })
-    console.log("Judges", options)
     const { fetchJudges, onChange } = this.props
     return  (
       <FormGroup validationState={this.validate(this.props) ? 'success' : 'error'}>

@@ -8,6 +8,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "webpack": "./node_modules/.bin/webpack --watch",
+    "webpack:build": "./node_modules/.bin/webpack",
     "sync_db:prod": "NODE_ENV=production node ./bin/db-integration.js",
     "sync_db:dev": "NODE_ENV=development node ./bin/db-integration.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -32,6 +33,7 @@
   },
   "homepage": "https://github.com/khangpn/dogbiz_billboard#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "bcrypt": "^1.0.2",
     "body-parser": "~1.17.1",
     "bootstrap": "^3.3.7",
@@ -45,6 +47,7 @@
     "jquery-ui-dist": "^1.12.1",
     "method-override": "^2.3.9",
     "morgan": "~1.8.1",
+    "normalizr": "^3.2.4",
     "pg": "^7.1.2",
     "pg-hstore": "^2.3.2",
     "promise": "^8.0.1",

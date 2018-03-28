@@ -40,26 +40,33 @@ var getJudgeList = function(Judge, cb) {
   return Judge.findAll().then(cb);
 };
 
-//router.get('/', function(req, res, next) {
-//
-//    // request validation here
-//
-//    next();
-//  }, function(req, res, next) {
-//  var Achievement = req.models.achievement;
-//  Achievement.findAll({
-//    include: [ 
-//      req.models.dog_show,
-//      req.models.judge,
-//      req.models.dog 
-//    ]
-//  })
-//    .then(function(achievements){
-//      res.render("list", {achievements: achievements});
-//    }).catch( function(error){
-//      next(error);
-//    });
-//});
+router.get('/dog_show/:dogShowId', function(req, res, next) {
+
+    // request validation here
+    console.log()
+
+    next();
+  }, function(req, res, next) {
+  var Achievement = req.models.achievement;
+  const Sequelize = req.models.Sequelize;
+  const dogShowId = req.params.dogShowId;
+  return Achievement.findAll({
+    include: [ 
+    {
+      model: req.models.dog_show,
+      where: {
+        id: dogShowId
+      }
+    },
+      req.models.judge,
+      req.models.dog 
+    ]
+  }).then(function(achievements){
+    res.json(achievements);
+  }).catch( function(error){
+    res.status(500).json(error)
+  });
+});
 
 router.post('/',
   function(req, res, next) {
@@ -88,7 +95,15 @@ router.post('/',
       if (created) {
         return achievement.validate().then( () => {
           return achievement.save().then( (achievement) => {
-            res.json({created, achievement})
+            return achievement.reload({
+              include: [ 
+                req.models.dog_show,
+                req.models.judge,
+                req.models.dog 
+              ]
+            }).then( () => {
+              res.json({created, achievement})
+            })
           }).catch ( function(error){
             console.error("Achievement save error", error)
             res.status(500).json(error)

@@ -9,6 +9,7 @@ module.exports = {
   context: APP_DIR,
   entry: {
     dogshow: [
+      'core-js/fn/promise',
       './dogshow'
     ]
   },
