@@ -107,30 +107,29 @@ router.post('/',
   }
 );
 
-//router.delete('/:id',
-//  function(req, res, next) {
-//    if (!res.locals.isAdmin) {
-//      var error = new Error('You are not permitted to access this!');
-//      error.status = 401;
-//      next(error);
-//    }
-//
-//    next();
-//  }, function(req, res, next) {
-//    var Achievement = req.models.achievement;
-//    Achievement.findById(req.params.id).then(function(achievement) {
-//      achievement.destroy().then(function() {
-//        res.redirect("/achievements");
-//      }).catch( function(error){
-//        next(error);
-//      });
-//    }).catch( function(error){
-//      var error = new Error("Can't find the achievement with id: " + data.id);
-//      error.status = 404;
-//      next(error);
-//    });
-//  }
-//);
+router.delete('/:id',
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      return res.status(401).json({msg: "You are not permitted to access this!"})
+    }
+
+    next();
+  }, function(req, res, next) {
+    var Achievement = req.models.achievement;
+    Achievement.findById(req.params.id).then(function(achievement) {
+      achievement.destroy().then(function() {
+        res.redirect("/achievements");
+        res.json({achievement})
+      }).catch( function(error){
+        console.error("Cannot delete the achievement", error)
+        res.status(400).json(error)
+      });
+    }).catch( function(error){
+      console.error("Can't find the achievement with id: " + data.id, error)
+      res.status(404).json(error)
+    });
+  }
+);
 //
 //router.get('/:id', 
 //  function (req, res, next) {
