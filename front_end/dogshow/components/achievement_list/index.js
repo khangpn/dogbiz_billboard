@@ -61,7 +61,7 @@ const mapStatetoProps = state => {
 const mapDispatchToProps = (dispatch, props) => {
     return {
         removeAchievement : achievement => {
-            dispatch(actions.removeAchievement(achievement))
+            dispatch(actions.removeAchievementRequest(achievement))
         }
     }
 }
