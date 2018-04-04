@@ -1,4 +1,4 @@
-import { buildUrl, getJSON, postJSON } from '../../utils/fetch-helper.js'
+import { buildUrl, getJSON, postJSON, deleteJSON } from '../../utils/fetch-helper.js'
 import { achievementEntities } from '../constants/action-types.js'
 
 export function addAchievements (achievements) {
@@ -21,10 +21,19 @@ export function clearAchievements () {
   }
 }
 
-export function removeAchievement(achievement) {
-  return {
-    type: achievementEntities.clear,
-    achievement
+export function removeAchievementRequest(achievement) {
+  
+  return dispatch => {
+    const url = `/api/achievements/${achievement.id}`
+    deleteJSON(url).then(res => {
+      dispatch(removeAchievement(achievement))
+    }) 
+  }
+}
+export function removeAchievement(achievement){
+   return {
+     type: achievementEntities.remove,
+     achievement
   }
 }
 

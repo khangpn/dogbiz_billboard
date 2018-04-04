@@ -63,3 +63,12 @@ export function putJSON(url, payload, options) {
   }
   return fetchJSON(url, opts)
 }
+
+export function deleteJSON(url, options){
+  const opts = {
+    ...options, 
+    method: 'delete',
+    ...FETCH_DEFAULTS
+  }
+  return fetchJSON(url, opts)
+}
